@@ -1,0 +1,47 @@
+// See: https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code
+{
+	"name": "DropDev",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "devcontainer",
+	"workspaceFolder": "/workspace",
+	"postCreateCommand": ["/bin/sh", "/workspace/.devcontainer/reset.sh"],
+	"remoteUser": "root",
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"files.exclude": {
+					// "**/.git": true,
+					// "**/.svn": true,
+					// "**/.hg": true,
+					// "**/CVS": true,
+					// "**/.DS_Store": true,
+					// "**/Thumbs.db": true,
+					// ".*": true
+				},
+				"files.associations": {
+					"*.inc": "php"
+				},
+				"cSpell.enabled": true,
+				"editorconfig.generateAuto": false,
+				"cSpell.words": [
+					"devcontainer",
+					"dropdev"
+				]
+			},
+			"extensions": [
+				"xdebug.php-debug",
+				"bmewburn.vscode-intelephense-client",
+				"streetsidesoftware.code-spell-checker",
+				"EditorConfig.EditorConfig",
+				"ms-azuretools.vscode-docker",
+				"mrmlnc.vscode-apache",
+				"DavidAnson.vscode-markdownlint",
+				"emilast.LogFileHighlighter",
+				"yzhang.markdown-all-in-one"
+			]
+		}
+	}
+}
