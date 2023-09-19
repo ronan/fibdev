@@ -26,7 +26,3 @@ $databases['default']['default'] = array (
 );
 $settings['config_sync_directory'] = 'sites/default/files/config_RVEBvMII0CR4mHJ_5z26YRQVUSwDbDBiJOz85M3Rw74nuOtkKWlFDdMu26VUnJUNGeE5xmm9_g/sync';
 $settings['hash_salt'] = getenv("HASH_SALT");
-
-if (file_exists($app_root . '/' . $site_path . '/settings.overrides.php')) {
-  include $app_root . '/' . $site_path . '/settings.overrides.php';
-}

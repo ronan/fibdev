@@ -11,3 +11,5 @@ RUN set -eux; \
     composer require drush/drush;
 
 ENV PATH=${PATH}:/core/vendor/bin
+
+COPY reset.sh /usr/local/bin/reset
