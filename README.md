@@ -19,5 +19,7 @@ ___╩___
 - [ ] Use mDNS to remove the need for different ports (eg: http://drupal.local http://phpmyadmin.local)
 - [x] Get phpinfo working
 - [x] Automatically restore from backup.
+- [ ] Get bee (https://backdropcms.org/project/bee) working
 - [ ] Proxy files from prod
-- [ ] Implement site env
+- [ ] Live previews
+- [x] Suppress debugging warning

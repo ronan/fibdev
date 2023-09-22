@@ -13,13 +13,10 @@
 		"vscode": {
 			"settings": {
 				"files.exclude": {
-					// "**/.git": true,
-					// "**/.svn": true,
-					// "**/.hg": true,
-					// "**/CVS": true,
-					// "**/.DS_Store": true,
-					// "**/Thumbs.db": true,
-					// ".*": true
+					// ".*": true, // Hide all hidden files for a focused view of just the source
+					"**/.git": true,
+					"**/.DS_Store": true,
+					"**/Thumbs.db": true
 				},
 				"files.associations": {
 					"*.inc": "php"

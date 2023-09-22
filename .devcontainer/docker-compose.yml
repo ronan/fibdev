@@ -10,9 +10,11 @@ services:
     env_file:
       - .env 
 
-  drupal:
-    image: drupal:10-fpm
-    container_name: drupal
+  backdrop:
+    build:
+      context: ./
+      dockerfile: backdrop.containerfile
+    container_name: backdrop
     links:
       - db
     volumes:
@@ -23,7 +25,7 @@ services:
   nginx:
     image: nginx:1.25
     links:
-      - drupal
+      - backdrop
     ports:
       - "80:80"
       - "8001:8001"
