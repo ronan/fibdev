@@ -1,6 +1,6 @@
 # dropdev
 
-A Dev Container based local dev environment for Drupal
+A Dev Container based local dev environment for Backdrop
 
 ```
 
@@ -16,7 +16,7 @@ ___╩___
 
 ## TODOs
 
-- [ ] Use mDNS to remove the need for different ports (eg: http://drupal.local http://phpmyadmin.local)
+- [ ] Use mDNS to remove the need for different ports (eg: http://backsdrop.local http://phpmyadmin.local)
 - [x] Get phpinfo working
 - [x] Automatically restore from backup.
 - [ ] Get bee (https://backdropcms.org/project/bee) working
