@@ -19,7 +19,9 @@ ___╩___
 - [ ] Use mDNS to remove the need for different ports (eg: http://backsdrop.local http://phpmyadmin.local)
 - [x] Get phpinfo working
 - [x] Automatically restore from backup.
-- [ ] Get bee (https://backdropcms.org/project/bee) working
+- [x] Get bee (https://backdropcms.org/project/bee) working
 - [ ] Proxy files from prod
 - [ ] Live previews
 - [x] Suppress debugging warning
+- [ ] Allow for local module install via UI
+- [ ] Get xdebug working for app container

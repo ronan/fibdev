@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 cd /workspace
@@ -9,14 +9,14 @@ rm -rf data
 mkdir -p data/logs data/db data/files data/tmp
 
 echo "🗃️  Recreating database ..."
-echo 'DROP DATABASE IF EXISTS backdrop; CREATE DATABASE backdrop' | mariadb -h db --password=root
+ mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS backdrop; CREATE DATABASE backdrop'
 
-if [ -f /workspace/inbox/*sql ] 
+if [ -f /workspace/inbox/*sql ]
 then
     echo "🚚 Importing SQL dump ..."
     cat /workspace/inbox/*sql | mariadb -h db -u root -proot backdrop
 fi
-if [ -f /workspace/inbox/*sql.gz ] 
+if [ -f /workspace/inbox/*sql.gz ]
 then
     echo "📦 Importing gzipped SQL dump ..."
     zcat /workspace/inbox/*sql.gz | mariadb -h db -u root -proot backdrop
@@ -28,30 +28,35 @@ then
     echo "🛑 J/k this isn't done yet."
     exit -1
 else
-    echo "🐉 Unzipping a fresh copy of Backdrop ..."
-    mkdir -p backdrop
-    tar -xz --strip-components=1 -C /workspace/backdrop -f /backdrop.tar.gz
-    rm -rf /workspace/backdrop/modules  /workspace/src/themes
+    echo "🐉 Copying over a fresh copy of Backdrop ..."
+    rm -rf backdrop
+    mkdir backdrop
+    cp -rf /backdrop/* /workspace/backdrop
 fi
 
-echo "📁 Adding custom code directories ..."
-[ -f "/workspace/src/modules" ]  && ln -fs /workspace/src/modules /workspace/backdrop/modules
-[ -f "/workspace/src/themes" ]   && ln -fs /workspace/src/themes  /workspace/backdrop/themes
+# echo "📁 Adding custom code directories ..."
+# dirs=( "modules" "themes" "sites" "layouts" )
+# for dir in "${dirs[@]}"
+# do
+#     if [ ! -f "/workspace/src/$dir" ]
+#     then
+#         cp -rf "/workspace/backdrop/$dir" "/workspace/src/"
+#     fi
+#     rm -rf "/workspace/backdrop/$dir"
+#     ln -fs "/workspace/src/$dir" "/workspace/backdrop/$dir"
+#     chmod -R a+w "/workspace/src/$dir"
+# done
 
-chown -R root:root /workspace/backdrop/*
+chown -R www-data:www-data /workspace/backdrop
 
 echo "📝 Adding local settings ..."
 cp -f /workspace/.devcontainer/settings.local.php /workspace/backdrop/settings.local.php
 
-# echo "🧩 Installing developer modules ..."
-# TODO: Bee is not working yet
-# bee dl backup_migrate
-# bee en backup_migrate
-# bee dl devel
-# bee en devel
+echo "🗳️  Installing Backdrop ..."
+bee install --auto --site-name="DropDev Starter Site" \
+            --db-name=backdrop --db-user=root --db-pass=root --db-host=db \
+            --username=admin --password=admin --email=admin@example.com
 
-cat << EOF
+echo "🎉\n"
 
-👉 http://localhost:8001 👈
-
-EOF
+bee uli

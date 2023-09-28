@@ -1,9 +1,15 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
-# install the PHP extensions we need
+# Install xdebug
+RUN yes | pecl install xdebug \
+    && rm -rf /tmp/pear
+
+# Install PHP extensions needed to run the app
 RUN apt-get update && apt-get install -y libzip-dev libonig-dev libpng-dev libjpeg-dev libpq-dev \
 	&& docker-php-ext-configure gd --with-jpeg=/usr \
 	&& docker-php-ext-install gd mbstring pdo pdo_mysql pdo_pgsql zip
 
+# Custom php ini settings
+RUN ln -s /workspace/.devcontainer/backdrop.php.ini /usr/local/etc/php/conf.d/dropdev.php.ini 
 
-CMD ["php-fpm", "-c", "/workspace/.devcontainer/php.ini"]
+CMD ["php-fpm"]

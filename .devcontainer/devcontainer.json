@@ -4,7 +4,7 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
 	"workspaceFolder": "/workspace",
-	"postCreateCommand": ["/bin/sh", "/workspace/.devcontainer/reset.sh"],
+	"postCreateCommand": ["reset"],
 	"remoteUser": "root",
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {}
