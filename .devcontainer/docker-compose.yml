@@ -4,17 +4,29 @@ services:
   devcontainer:
     build:
       context: ./
-      dockerfile: devcontainer.containerfile
+      dockerfile: devcontainer/devcontainer.containerfile
     volumes:
       - ../:/workspace
     env_file:
       - .env 
 
-  backdrop:
+  drupal9:
     build:
       context: ./
-      dockerfile: backdrop.containerfile
-    container_name: backdrop
+      dockerfile: drupal9/drupal9.containerfile
+    container_name: drupal9
+    links:
+      - db
+    volumes:
+      - ../:/workspace
+    env_file:
+      - .env
+
+  drupal10:
+    build:
+      context: ./
+      dockerfile: drupal10/drupal10.containerfile
+    container_name: drupal10
     links:
       - db
     volumes:
@@ -25,11 +37,12 @@ services:
   nginx:
     image: nginx:1.25
     links:
-      - backdrop
+      - drupal10
+      - drupal9
     ports:
       - "80:80"
-      - "8001:8001"
-      - "8002:8002"
+      - "8009:8009"
+      - "8010:8010"
       - "8411:8411"
     volumes:
       - ../:/workspace

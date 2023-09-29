@@ -1,6 +1,6 @@
 # dropdev
 
-A Dev Container based local dev environment for Backdrop
+A Dev Container based local dev tool for Drupal9/Drupal10 migrations
 
 ```
 
@@ -23,5 +23,5 @@ ___╩___
 - [ ] Proxy files from prod
 - [ ] Live previews
 - [x] Suppress debugging warning
-- [ ] Allow for local module install via UI
-- [ ] Get xdebug working for app container
+- [x] Allow for local module install via UI
+- [x] Get xdebug working for app container
