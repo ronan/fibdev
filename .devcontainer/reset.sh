@@ -9,25 +9,24 @@ rm -rf data
 mkdir -p data/logs data/db data/files data/tmp
 
 echo "🗃️  Recreating databases ..."
- mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal9; CREATE DATABASE drupal9'
- mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal10; CREATE DATABASE drupal10'
-
-if [ -f /workspace/inbox/*sql ]
-then
-    echo "🚚 Importing SQL dump ..."
-    cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal9
-fi
-if [ -f /workspace/inbox/*sql.gz ]
-then
-    echo "📦 Importing gzipped SQL dump ..."
-    zcat /workspace/inbox/*sql.gz | mariadb -h db -u root -proot drupal9
-fi
+mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal9; CREATE DATABASE drupal9'
+mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal10; CREATE DATABASE drupal10'
 
 if [ -f /workspace/inbox/*code.tar* ]
 then
-    echo "📚 Importing a Backup ..."
-    echo "🛑 J/k this isn't done yet."
-    exit -1
+    echo "Not implemented"
+if [ -f /workspace/inbox/code ]
+then
+    rm -rf /workspace/drupal9
+    cp -rf /workspace/inbox/code /workspace/drupal9
+    cd /workspace/drupal9
+    yes | composer require drush/drush  --ignore-platform-req=php
+    composer install --no-interaction --ignore-platform-req=php
+
+    cp -rf /workspace/inbox/code /workspace/drupal10
+    cd /workspace/drupal10
+    yes | composer require drush/drush  --ignore-platform-req=php
+    composer install --no-interaction --ignore-platform-req=php
 else
     for v in 9 10; do
         echo "💧 Composing a fresh copy of Drupal $v ..."
@@ -50,6 +49,29 @@ else
     done
 fi
 
+
+if [ -f /workspace/inbox/*sql ]
+then
+    echo "🚚 Importing SQL dump ..."
+    cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal9
+    cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal10
+elif [ -f /workspace/inbox/*sql.gz ]
+then
+    echo "📦 Importing gzipped SQL dump ..."
+    zcat /workspace/inbox/*sql.gz | mariadb -h db -u root -proot drupal9
+    zcat /workspace/inbox/*sql.gz | mariadb -h db -u root -proot drupal10
+else
+    echo "🗳️  Installing Drupal 9 ..."
+    drush9 si --db-url=mysql://root:root@db/drupal9 --site-name="D9 Site" -y
+    echo "🗳️  Installing Drupal 10 ..."
+    drush10 si --db-url=mysql://root:root@db/drupal10 --site-name="D10 Site" -y
+fi
+
+echo "📝 Adding local settings ..."
+cp -f /workspace/.devcontainer/drupal9/settings.local.php /workspace/drupal9/web/sites/default/settings.php
+cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal9/web/sites/default/settings.php
+
+
 # echo "📁 Adding custom code directories ..."
 # dirs=( "modules" "themes" "sites" "layouts" )
 # for dir in "${dirs[@]}"
@@ -62,16 +84,6 @@ fi
 #     ln -fs "/workspace/src/$dir" "/workspace/backdrop/$dir"
 #     chmod -R a+w "/workspace/src/$dir"
 # done
-
-echo "📝 Adding local settings ..."
-cp -f /workspace/.devcontainer/drupal9/settings.local.php /workspace/drupal9/settings.local.php
-cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/settings.local.php
-
-echo "🗳️  Installing Drupal 9 ..."
-drush9 si --db-url=mysql://root:root@db/drupal9 --site-name="D9 Site" -y
-
-echo "🗳️  Installing Drupal 10 ..."
-drush10 si --db-url=mysql://root:root@db/drupal10 --site-name="D10 Site" -y
 
 echo "👇 Drupal 9 site login"
 drush9 uli
