@@ -1,5 +1,5 @@
 .DS_Store
-data/*/*
-inbox/*
-drupal9
-drupal10
+/data/*/*
+/inbox/*
+/drupal9
+/drupal10

@@ -5,7 +5,8 @@ cd /workspace
 
 echo "Initializing D9->D10 Migration Tool."
 echo "🗑️  Deleting logs, databases and temporary files ..."
-rm -rf data
+mkdir -p data
+rm -rf data/logs data/db data/files data/tmp
 mkdir -p data/logs data/db data/files data/tmp
 
 echo "🗃️  Recreating databases ..."
