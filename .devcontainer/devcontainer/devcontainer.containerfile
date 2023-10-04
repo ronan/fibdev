@@ -10,8 +10,11 @@ RUN apt-get update && apt-get install -y libzip-dev libonig-dev libpng-dev libjp
 RUN ln -s /workspace/.devcontainer/devcontainer.php.ini /usr/local/etc/php/conf.d/devcontainer.php.ini
 
 # Helper commands
-RUN ln -s /workspace/.devcontainer/drupal9/drush9.sh 	/usr/local/bin/drush9;  \
-	ln -s /workspace/.devcontainer/drupal10/drush10.sh 	/usr/local/bin/drush10; \
-	ln -s /workspace/.devcontainer/reset.sh 			/usr/local/bin/reset
+RUN ln -s /workspace/.devcontainer/drupal9/drush9.sh 		/usr/local/bin/drush9;  	\
+	ln -s /workspace/.devcontainer/drupal10/drush10.sh 		/usr/local/bin/drush10; 	\
+	ln -s /workspace/.devcontainer/drupal9/composer9.sh 	/usr/local/bin/composer9; 	\
+	ln -s /workspace/.devcontainer/drupal10/composer10.sh 	/usr/local/bin/composer10;	\
+	ln -s /workspace/.devcontainer/reset.sh 				/usr/local/bin/reset
 
-RUN composer global require drush/drush:11.*
+
+# RUN composer global require drush/drush:11.*

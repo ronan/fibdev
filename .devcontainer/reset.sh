@@ -13,22 +13,20 @@ echo "🗃️  Recreating databases ..."
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal9; CREATE DATABASE drupal9'
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal10; CREATE DATABASE drupal10'
 
-if [ -f /workspace/inbox/*code.tar* ]
+if [ -d /workspace/inbox/code ]
 then
-    echo "Not implemented"
-if [ -f /workspace/inbox/code ]
-then
+    echo "📂 Copying source from inbox ..."
     rm -rf /workspace/drupal9
     cp -rf /workspace/inbox/code /workspace/drupal9
-    cd /workspace/drupal9
-    yes | composer require drush/drush  --ignore-platform-req=php
-    composer install --no-interaction --ignore-platform-req=php
+    composer9 install --no-interaction --ignore-platform-req=php
 
     cp -rf /workspace/inbox/code /workspace/drupal10
-    cd /workspace/drupal10
-    yes | composer require drush/drush  --ignore-platform-req=php
-    composer install --no-interaction --ignore-platform-req=php
+    composer10 install --no-interaction --ignore-platform-req=php
 else
+    echo "😵 Please place the site in /workspace/inbox/code"
+    exit
+
+
     for v in 9 10; do
         echo "💧 Composing a fresh copy of Drupal $v ..."
 
@@ -51,6 +49,11 @@ else
 fi
 
 
+echo "📝 Adding local settings ..."
+cp -f /workspace/.devcontainer/drupal9/settings.local.php /workspace/drupal9/web/sites/default/settings.php
+cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal9/web/sites/default/settings.php
+
+
 if [ -f /workspace/inbox/*sql ]
 then
     echo "🚚 Importing SQL dump ..."
@@ -68,10 +71,6 @@ else
     drush10 si --db-url=mysql://root:root@db/drupal10 --site-name="D10 Site" -y
 fi
 
-echo "📝 Adding local settings ..."
-cp -f /workspace/.devcontainer/drupal9/settings.local.php /workspace/drupal9/web/sites/default/settings.php
-cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal9/web/sites/default/settings.php
-
 
 # echo "📁 Adding custom code directories ..."
 # dirs=( "modules" "themes" "sites" "layouts" )
@@ -88,7 +87,7 @@ cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal9/we
 
 echo "👇 Drupal 9 site login"
 drush9 uli
-echo "👇 Drupal 10 site login"
-drush10 uli
+# echo "👇 Drupal 10 site login"
+# drush10 uli
 
 echo "🎉 🎉 🎉"
