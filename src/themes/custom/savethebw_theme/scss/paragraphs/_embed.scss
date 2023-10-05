@@ -1,0 +1,112 @@
+.paragraph--type-embed {
+
+  &.full-width {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+  }
+
+  .label-amount {
+
+    input.edit-otheramount,
+    span.label-otheramount-prefix {
+      color: $blue-dark !important;
+    }
+  }
+
+  @include everyaction-styles();
+
+  .at-row {
+
+      .form-item-selectedfrequency {
+        position: relative;
+        padding-bottom: 45px;
+
+        @media (max-width: 1009px) {
+          padding-bottom: 75px;
+        }
+
+        @media (max-width: 605px) {
+          padding-bottom: 75px;
+        }
+
+        @media (max-width: 535px) {
+          padding-bottom: 65px;
+        }
+
+        @media (max-width: 465px) {
+          padding-bottom: 40px;
+        }
+
+        @media (max-width: 390px) {
+          padding-bottom: 70px;
+        }
+
+        .at-radio-label-4 {
+          position: static;
+
+          input {
+
+            &::before {
+              content: url('../images/arrow.svg');
+              display: block;
+              position: absolute;
+              top: 35px;
+              left: 122px;
+              width: 45px;
+              height: auto;
+
+              @media (max-width: 535px) {
+                width: 35px;
+              }
+
+              @media (max-width: 465px) {
+                transform: rotate(70deg) scaleY(-1);
+                top: -5px;
+                left: 215px;
+              }
+            }
+
+            &::after {
+              content: 'Switch your gift to monthly to protect the Boundary Waters all year long!';
+              font-size: 26px;
+              line-height: 1.2em;
+              font-family: $font-family-special;
+              color: #00666B;
+              display: block;
+              position: absolute;
+              bottom: 0;
+              left: 185px;
+              width: calc(100% - 185px);
+              padding-right: 10px;
+
+              @media (max-width: 959px) {
+                width: 334px;
+              }
+
+              @media (max-width: 535px) {
+                font-size: 24px;
+                left: 170px;
+                width: calc(100% - 170px);
+              }
+
+              @media (max-width: 465px) {
+                left: 10px;
+                width: 100%;
+              }
+            }
+
+            &:checked::before,
+            &:checked::after {
+              display: none;
+            }
+          }
+        }
+
+        .radio-description {
+          display: none;
+        }
+      }
+  }
+}

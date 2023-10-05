@@ -1,0 +1,398 @@
+.node--type-blog {
+
+  &.node--view-mode-banner {
+    position: relative;
+    display: flex;
+    padding-top: 35px;
+    padding-bottom: 50px;
+
+    &.no-image {
+      padding-top: 60px;
+
+      .group-left {
+        width: 66.66%;
+      }
+    }
+
+    &.has-image {
+
+      @media screen and (max-width: 650px) {
+        flex-direction: column-reverse;
+      }
+
+      .group-left {
+        width: 50%;
+        padding-right: 20px;
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+          padding: 0;
+        }
+      }
+
+      .group-right {
+        width: 50%;
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+          padding-bottom: 20px;
+        }
+      }
+    }
+
+    .group-header {
+      position: absolute;
+      background: url('../images/blog-wave.svg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100vw;
+      height: 50vw;
+      left: calc(-1 * (100vw - 100%) / 2);
+      top: -10vw;
+      z-index: -1;
+    }
+
+    .group-left {
+      height: 100%;
+    }
+
+    .group-right {
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .field--name-field-department {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $blue-dark;
+      margin-bottom: 20px;
+      @include title-box($teal);
+    }
+
+    .field--name-node-title h1 {
+      color: $blue-dark;
+      font-size: 50px;
+      line-height: 58px;
+
+      @media screen and (max-width: 850px) and (min-width: 650px) {
+        font-size: 42px;
+        line-height: 50px;
+      }
+
+      @media screen and (max-width: 650px) {
+        font-size: 36px;
+        line-height: 42px;
+      }
+    }
+
+    .field--name-field-date {
+      font-size: 20px;
+      font-weight: bold;
+      color: $blue-dark;
+      margin-bottom: 5px;
+
+      @media screen and (max-width: 850px) and (min-width: 650px) {
+        font-size: 19px;
+      }
+
+      @media screen and (max-width: 650px) {
+        font-size: 18px;
+      }
+    }
+
+    .field--name-field-author-plain {
+      font-size: 20px;
+      font-weight: bold;
+      color: $blue-dark;
+
+      @media screen and (max-width: 850px) and (min-width: 650px) {
+        font-size: 19px;
+      }
+
+      @media screen and (max-width: 650px) {
+        font-size: 18px;
+      }
+
+      .field__label {
+        display: inline-block;
+      }
+
+      .field__item {
+        display: inline-block;
+      }
+    }
+
+    .social-sharing-buttons {
+      justify-content: left;
+      margin: 25px 0;
+
+      .share-label {
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      svg {
+        fill: #7C8F99;
+        transition: all 0.5s;
+
+        &:hover {
+          fill: $blue-dark;
+        }
+      }
+    }
+  }
+
+  &.node--view-mode-featured {
+
+    a.field-group-link {
+
+      &:hover {
+        text-decoration: none;
+
+        .field--name-node-title h3 {
+          @include underline-hover();
+        }
+      }
+    }
+
+    .field--name-field-image img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .field--name-field-department {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .field--name-node-title h3 {
+      font-size: 31px;
+      line-height: 36px;
+      font-weight: bold;
+      @include underline-effect();
+
+      @media screen and (max-width: 850px) and (min-width: 600px) {
+        font-size: 28px;
+        line-height: 32px;
+      }
+
+      @media screen and (max-width: 600px) {
+        font-size: 24px;
+        line-height: 28px;
+      }
+    }
+
+    .field--name-field-date {
+      display: inline-block;
+      color: $black;
+
+      &::after {
+        content: '|';
+        display: inline-block;
+        padding-left: 8px;
+      }
+    }
+
+    .field--name-field-author {
+      display: inline-block;
+      color: $black;
+    }
+
+    .field--name-field-teaser {
+      color: $black;
+    }
+  }
+
+  &.node--view-mode-secondary-feature {
+
+    a.field-group-link {
+
+      &:hover {
+        text-decoration: none;
+
+        .field--name-node-title h3 {
+          @include underline-hover();
+        }
+      }
+    }
+
+    .field--name-field-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .field--name-field-department {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .field--name-node-title h3 {
+      @include underline-effect();
+    }
+
+    .field--name-field-date {
+      font-size: 16px;
+      line-height: 22px;
+      display: inline-block;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .field--name-field-author {
+      font-size: 16px;
+      line-height: 22px;
+      display: inline-block;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+
+      &::before {
+        content: '|';
+        display: inline-block;
+        padding-right: 8px;
+      }
+    }
+  }
+
+  &.node--view-mode-teaser {
+    height: 100%;
+
+    a.field-group-link {
+
+      &:hover {
+        text-decoration: none;
+
+        .field--name-node-title h3 {
+          @include underline-hover();
+        }
+      }
+    }
+
+    .field--name-field-image {
+      margin-bottom: 10px;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .field--name-field-department {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .field--name-node-title h3 {
+      @include underline-effect();
+    }
+
+    .field--name-field-date {
+      margin-top: 5px;
+      font-size: 16px;
+      line-height: 22px;
+      display: inline-block;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .field--name-field-author {
+      font-size: 16px;
+      line-height: 22px;
+      display: inline-block;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+
+      &::before {
+        content: '|';
+        display: inline-block;
+        padding-right: 8px;
+      }
+    }
+  }
+
+  &.node--view-mode-full {
+
+    > div > .field--name-field-components > .field__item:first-child .color-white > div:after {
+      display: none;
+    }
+  }
+}

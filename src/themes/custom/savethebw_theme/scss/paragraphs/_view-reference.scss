@@ -1,0 +1,19 @@
+.paragraph--type-view-reference {
+
+  ul.js-pager__items {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin-top: 80px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+
+    li.pager__item {
+      display: inline-block;
+
+      a.button {
+        @include button();
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+// Borders
+$border-radius-lg: 0;
+$border-radius-sm: 0;
+$border-radius: 0;
+
+// Containers
+$container-max-width: 1120px;
+$container-width: 1120px;
+
+// Navbar
+$navbar-padding-x: 30px;
+$navbar-padding-y: 0;
+$navbar-dark-color: #fff;
+
+// Dropdown
+$dropdown-dark-link-active-bg: transparent;
+$dropdown-dark-link-hover-bg: transparent;
+$dropdown-link-active-bg: transparent;
+$dropdown-link-hover-bg: transparent;
+
+// Modals
+$modal-content-border-width: 0;
+$modal-content-box-shadow-sm-up: none;
+$modal-content-box-shadow-xs: none;
+$modal-sm: 1100px;
+$modal-md: 1100px;
+$modal-lg: 1100px;
+$modal-xl: 1100px;
+$modal-backdrop-bg: #0D2D40;
+$modal-backdrop-opacity: 0.91;
+
+// Colors
+$primary: #0D2D40;
+
+$font-family-base: proxima-nova, sans-serif;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 900px,
+  xl: 921px,
+  xxl: 1400px
+) !default;

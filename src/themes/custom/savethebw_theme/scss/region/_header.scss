@@ -1,0 +1,338 @@
+header.region-header {
+  background: $blue-dark;
+
+  .navbar {
+    max-width: 1150px;
+    padding: 10px 15px 20px 15px;
+    margin: auto;
+    transition: all .3s;
+
+    @media screen and (max-width: 920px) {
+      padding: 0px 15px 10px 15px;
+    }
+  }
+
+  .navbar-brand {
+    margin-right: auto;
+    padding: 0;
+
+    img {
+      width: 180px;
+      height: auto;
+
+      @media screen and (max-width: 920px) {
+        width: 200px;
+      }
+    }
+  }
+
+  .navbar-dark .navbar-toggler {
+    border: 0;
+    padding: 0;
+    margin-top: 12px;
+
+    &:focus {
+      border: 0;
+      box-shadow: 0 0 0 0.2rem rgb(49 77 93 / 50%);
+      outline: none;
+    }
+  }
+
+  .navbar-toggler-icon {
+    background-image: url(../images/menu.svg);
+    width: 74px;
+    height: 40px;
+  }
+
+  #block-sociallinks {
+    position: absolute;
+    top: 44px;
+    right: 53px;
+
+    @media screen and (max-width: 920px) {
+      display: none;
+    }
+
+    ul.menu {
+      list-style: none;
+      display: flex;
+
+      li.menu-item {
+        padding: 0 10px;
+        opacity: 0.5;
+        transition: all 0.5s;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  #block-searchform {
+    position: absolute;
+    top: 20px;
+    right: 2px;
+
+    @media screen and (max-width: 920px) {
+      right: 80px;
+      top: 35px;
+
+      svg {
+        width: 38px;
+        height: 37px;
+      }
+    }
+
+    .btn-primary {
+      border: 0;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: transparent;
+        background: none;
+        border: 0;
+      }
+    }
+  }
+
+  #CollapsingNavbar {
+    position: absolute;
+    bottom: 24px;
+    right: 15px;
+
+    ul.nav {
+
+      li.nav-item {
+
+        span,
+        > a {
+          transition: opacity 0.5s;
+        }
+
+        &.show {
+
+          span,
+          > a {
+            opacity: 0.7;
+          }
+        }
+      }
+
+      > li:last-child > a {
+        @include button();
+      }
+    }
+
+    .dropdown-menu {
+      border: none;
+      margin: 0;
+      padding-top: 24px;
+      background: none;
+      min-width: 284px;
+
+      &.show {
+
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 20px);
+        background: #fff;
+        z-index: -1;
+        border: 2px solid $teal;
+        border-top: none;
+      }
+
+      > .menu-feature {
+        display: block;
+        float: right;
+
+        + li {
+          margin-top: 10px;
+        }
+      }
+
+      > li.dropdown-item {
+        padding: 10px 25px;
+        width: auto;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+
+        &:first-of-type {
+          margin-top: 10px;
+        }
+
+        a {
+          @include underline-effect();
+
+          &:hover {
+            @include underline-hover();
+          }
+        }
+      }
+    }
+
+    .has-menu-feature .dropdown-menu {
+      width: 500px;
+
+      > .menu-feature {
+        width: 230px;
+        margin: 20px 20px 0;
+
+        .field--name-field-link {
+          line-height: 1.2em;
+        }
+      }
+
+      .field--name-field-image {
+        margin-bottom: 8px;
+      }
+
+      li.dropdown-item {
+        float: left;
+        clear: left;
+      }
+    }
+
+    .nav-link {
+      padding: 9px 25px;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 700;
+    }
+
+    span.nav-link:hover,
+    span.nav-link:focus {
+      color: #fff !important;
+      cursor: default;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
+  }
+
+  .field-group-link {
+
+    .field--name-field-link {
+      @include underline-effect();
+    }
+
+    &:hover {
+      text-decoration: none;
+
+      .field--name-field-link {
+        @include underline-hover();
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+#site-search {
+
+  .modal-dialog {
+    max-width: 1150px;
+    background: none;
+
+    .modal-header {
+      flex-direction: column-reverse;
+
+      h2 {
+        margin: 80px auto 10px auto;
+        font-size: 16px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: white;
+        letter-spacing: 1px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      [data-dismiss='modal'] {
+        display: inline-block;
+        height: 48px;
+        opacity: 1;
+        overflow: hidden;
+        padding: 0;
+        pointer-events: all;
+        position: relative;
+        text-indent: -9999px;
+        width: 48px;
+
+        &::before {
+          background-image: url("../images/search-close.svg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          content: '';
+          display: block;
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+      }
+    }
+
+    .modal-content {
+      background: none;
+      padding: 0;
+
+      .search-form {
+        justify-content: center;
+
+        fieldset.js-form-item {
+
+          input {
+            font-size: 19px;
+            line-height: 28px;
+            color: $black;
+            height: 68px;
+            width: 460px;
+            border: none;
+          }
+        }
+
+        .form-actions {
+          position: relative;
+
+          &:hover {
+
+            &::after {
+              transform: translateX(-50%) translateY(-50%) scale(1.3);
+            }
+          }
+
+          input.js-form-submit {
+            height: 68px;
+            width: 60px;
+            font-size: 0;
+            background: $teal;
+            border: none;
+          }
+
+          &::after {
+            content: url('../images/search.svg');
+            display: block;
+            position: absolute;
+            height: 27px;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            transition: all 0.5s;
+          }
+        }
+      }
+    }
+  }
+}

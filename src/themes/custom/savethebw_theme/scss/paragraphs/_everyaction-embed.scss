@@ -1,0 +1,188 @@
+.paragraph--type-everyaction-embed {
+  @include everyaction-styles();
+
+  > div {
+    display: flex;
+
+    @media screen and (max-width: 1000px) {
+      display: block;
+    }
+  }
+
+  .group-left {
+    width: 50%;
+    padding-right: 50px;
+
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+      padding: 0 0 50px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .group-right {
+    width: 50%;
+
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  h2 {
+    text-transform: none;
+    font-size: 31px;
+    line-height: 1.2em;
+    color: $blue-dark;
+  }
+
+  .field--name-field-image {
+    margin-bottom: 30px;
+  }
+
+  .at {
+    font-family: $font-family-base;
+
+    form {
+      background: $gray-light;
+      padding: 20px 30px;
+
+      .form-unit {
+        text-align: center;
+
+        label {
+          font-size: 22px !important;
+          font-weight: normal;
+          margin: 0 15px;
+        }
+      }
+
+      .label-amount {
+        font-weight: bold;
+        font-size: 22px;
+        padding: 20px 8px;
+        letter-spacing: 1px;
+        width: 29%;
+
+        > a {
+          height: 70px;
+        }
+
+        &:nth-child(4n+4) {
+          margin-right: 4%;
+        }
+
+        &:hover input[type=radio] + a {
+          background: $blue-dark !important;
+        }
+
+        &.label-otheramount {
+          width: 62%;
+        }
+
+        input {
+          height: 70px;
+          font-size: 22px;
+
+          &+.label-otheramount-prefix {
+            line-height: 58px;
+            font-size: 22px;
+          }
+        }
+
+        input.edit-otheramount,
+        span.label-otheramount-prefix {
+          color: $blue-dark !important;
+        }
+      }
+
+      legend {
+        margin: 0 0 5px !important;
+      }
+    }
+  }
+
+  header.at-title {
+    color: $blue-dark;
+    font-size: 31px;
+    line-height: 36px;
+  }
+
+  .at form .label-amount input[type="radio"]:checked + a {
+    background-color: $blue-dark !important;
+  }
+
+  .at form .label-amount input[type="radio"] + a {
+    background-color: $gray-dark !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .at-form-submit input {
+    font-size: 16px !important;
+    line-height: 22px !important;
+    display: inline-block !important;
+    padding: 13px 28px !important;
+    border: 2px solid $teal !important;
+    border-radius: 50px !important;
+    color: $blue-dark !important;
+    background: $teal !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-weight: bold !important;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  fieldset {
+
+    legend {
+      color: $blue-dark !important;
+      font-size: 31px !important;
+      line-height: 36px !important;
+      text-align: center !important;
+      margin-bottom: 20px !important;
+    }
+
+    label {
+      text-transform: uppercase !important;
+      color: $blue-dark;
+      font-weight: bold;
+
+      &.at-radio-label-0,
+      &.at-radio-label-1,
+      &.at-radio-label-2,
+      &.at-radio-label-3,
+      &.at-radio-label-4,
+      &.at-check {
+        text-transform: none !important;
+        color: $black !important;
+      }
+    }
+
+    input,
+    select,
+    textarea,
+    iframe {
+      border-radius: 0 !important;
+      border: 1px solid $gray-border !important;
+    }
+  }
+
+  .field--field-embed-code {
+
+    .label-amount {
+
+      > a {
+        border-radius: 0 !important;
+        border: none !important;
+      }
+    }
+  }
+}

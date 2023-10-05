@@ -1,0 +1,9 @@
+@import 'base/fonts';
+@import 'base/variables';
+@import 'base/functions';
+@import 'base/wysiwyg';
+@import 'base/global';
+
+.cke_editable {
+  @include richtext();
+}

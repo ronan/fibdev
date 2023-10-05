@@ -1,0 +1,84 @@
+.paragraph--type-icon-grid {
+  max-width: 950px;
+  margin: auto;
+  position: relative;
+  text-align: center;
+
+  h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $blue-dark;
+    @include title-box();
+    padding: 0 15%;
+
+    @media screen and (max-width: 850px) and (min-width: 650px) {
+      padding: 0 10%;
+    }
+
+    @media screen and (max-width: 650px) {
+      padding: 0 5%;
+    }
+
+    p {
+      padding: 0;
+    }
+  }
+
+  .field--name-field-lead-in-text {
+    text-align: center;
+  }
+
+  .field--name-field-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;
+
+    > .field__item {
+      flex: 0 0 33.33%;
+      margin-bottom: 40px;
+
+      @media screen and (max-width: 650px) and (min-width: 400px) {
+        flex: 0 0 50%;
+        margin-bottom: 60px;
+      }
+
+      @media screen and (max-width: 400px) {
+        flex: 0 0 100%;
+        margin-bottom: 50px;
+      }
+
+      .media--type-icon {
+
+        > div {
+          margin: auto;
+
+          a.field-group-link:hover {
+            text-decoration: none;
+
+            img {
+              transform: scale(1.1);
+            }
+          }
+
+          .field--name-field-media-image img {
+            width: 100%;
+            height: auto;
+            max-width: 76px;
+            margin: auto;
+            display: block;
+            transition: all 0.5s;
+          }
+
+          .field--name-field-title {
+            color: $blue-dark;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+  }
+}

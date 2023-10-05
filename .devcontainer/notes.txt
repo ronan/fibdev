@@ -1,0 +1,15 @@
+# echo "⬆️  Updating core and modules to lastest 9.x version ..."
+# # git config --global --add safe.directory '*'
+# composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
+
+# echo "🔍 Running upgrade status ..."
+# composer10 require --no-audit --ignore-platform-req=php --dev drupal/upgrade_status 'drupal/composer_deploy:^1.7'
+# drush10 pm:enable upgrade_status composer_deploy
+# drush10 us-a --all  --ignore-custom --ignore-uninstalled > /workspace/outbox/upgrade-status.txt
+
+# echo "🪚  Rector? Damn near killed her!"
+# echo "🧰 Add developer modules ..."
+# composer10 require --no-install --dev palantirnet/drupal-rector
+# cp /workspace/drupal10/vendor/palantirnet/drupal-rector/rector.php /workspace/drupal10/vendor/
+# /workspace/drupal10/vendor/bin/rector process /workspace/drupal10/web/modules/custom/savethebw
+# sed '${s/$/|| \^10\.0/}' /workspace/drupal9/web/modules/custom/savethebw/savethebw.info.yml > /workspace/drupal10/web/modules/custom/savethebw/savethebw.info.yml

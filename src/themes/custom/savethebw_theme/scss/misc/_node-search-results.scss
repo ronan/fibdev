@@ -1,0 +1,22 @@
+form#search-form {
+
+  .form-control {
+    width: auto;
+  }
+
+  input.form-submit {
+    @include button();
+    background: $teal;
+    border-radius: 50px;
+    border: 0;
+  }
+}
+
+ol.node_search-results {
+
+  li {
+    border: 0;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+}

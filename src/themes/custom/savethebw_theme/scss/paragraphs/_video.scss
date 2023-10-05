@@ -1,0 +1,88 @@
+.paragraph--type-video,
+.paragraph--type-resource-video {
+  position: relative;
+
+  &.paragraph--view-mode-overlay {
+    padding: 0;
+
+    > div {
+      max-width: 100%;
+    }
+  }
+
+  > div {
+    max-width: 700px;
+    margin: auto;
+
+    // .youtube-container {
+    //   margin: auto;
+    //   position: relative;
+    //   padding-bottom: 56.25%; /* 16:9 */
+    //   height: 0;
+    //
+    //   iframe {
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //   }
+    // }
+  }
+
+  .field--name-field-video,
+  .field--name-field-video-youtube {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.color-gray {
+
+    > div {
+
+      &::before {
+        content: '';
+        display: block;
+        width: 100vw;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: calc(-1 * (100vw - 100%) / 2);
+        background: $gray;
+        z-index: -1;
+      }
+    }
+  }
+
+  button {
+    padding: 0;
+    border: none;
+    background: none;
+
+    &::after {
+      content: url('../images/play-button.svg');
+      display: block;
+      position: absolute;
+      top: 49%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  .field--name-field-poster-image {
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

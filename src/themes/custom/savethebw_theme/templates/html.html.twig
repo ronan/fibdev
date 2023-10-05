@@ -1,0 +1,121 @@
+{#
+/**
+ * @file
+ * Theme override for the basic structure of a single Drupal page.
+ *
+ * Variables:
+ * - logged_in: A flag indicating if user is logged in.
+ * - root_path: The root path of the current page (e.g., node, admin, user).
+ * - node_type: The content type for the current node, if the page is a node.
+ * - head_title: List of text elements that make up the head_title variable.
+ *   May contain or more of the following:
+ *   - title: The title of the page.
+ *   - name: The name of the site.
+ *   - slogan: The slogan of the site.
+ * - page_top: Initial rendered markup. This should be printed before 'page'.
+ * - page: The rendered page markup.
+ * - path_info.args: Array of URL arguments un aliassed.
+ * - page_bottom: Closing rendered markup. This variable should be printed after
+ *   'page'.
+ * - db_offline: A flag indicating if the database is offline.
+ * - placeholder_token: The token for generating head, css, js and js-bottom
+ *   placeholders.
+ *
+ * @see template_preprocess_html()
+ */
+#}
+{%
+  set body_classes = [
+    logged_in ? 'user-logged-in',
+    not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+    node_type ? 'node--type-' ~ node_type|clean_class,
+    db_offline ? 'db-offline',
+  ]
+%}
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token|raw }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <css-placeholder token="{{ placeholder_token|raw }}">
+    <js-placeholder token="{{ placeholder_token|raw }}">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+    {'gtm.start': new Date().getTime(),event:'gtm.js'}
+    );var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5VG8GL');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '342562669867846');
+    fbq('track', 'PageView');
+    </script>
+    <script>
+      fbq('track', 'ViewContent', {
+        content_ids: 'New conversion',
+      });
+    </script>
+    <noscript>
+     <img height="1" width="1"
+    src="https://www.facebook.com/tr?id=342562669867846&ev=PageView
+    &noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+  </head>
+  <body{{ attributes.addClass(body_classes) }}>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5VG8GL"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- STAAT Tag Code (#2245) -->
+  <script type="text/javascript">
+  var utag_data = {
+  sizmek_activity_id : "", //
+  sizmek_tag_id : "", // Sizmek Tag ID (TID)
+  page_name : "", // Contains a user-friendly name for the page.
+  page_section : "", // Contains a user-friendly page section, e.g. 'configuration section'.
+  page_category : "", // Contains a user-friendly page category, e.g. 'appliance page'.
+  page_subcategory : "", // Contains a user-friendly page subcategory, e.g. 'refrigerator page'.
+  page_type : "", // Contains a user-friendly page type, e.g. 'cart page'.
+  search_term : "", // Contains the search term or query submitted by a visitor.
+  search_results : "", // Contains the number of results returned with a search query.
+  search_type : "", // Contains the type of search conducted by the visitor.
+  parent_title : "", // Title of parent window
+  parent_domain : "", // Domain of parent window
+  parent_pathname : "", // Pathname of parent window
+  parent_url : "", // URL of parent window
+  parent_referrer : "", // Referrer of parent window
+  sizmek_cn : "", // Sizmek CN
+  sizmek_tag_type : "", // Sizmek Tag Type
+  sizmek_tval : "", // Sizmek TVAL
+  doubleclick_id : "", // Doubleclick Type
+  doubleclick_type : "", //
+  doubleclick_category : "", //
+  google_tracking_id : "", //
+  google_tracker_name : "" // Google Tracker Name
+  }
+  </script>
+  <!-- Loading script asynchronously -->
+  <script type="text/javascript">
+  (function(a,b,c,d){ a='//tags.tiqcdn.com/utag/advantagepublisherservices/aps/prod/utag.js'; b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true; a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a); })();
+  </script>
+  <!-- End STAAT code -->
+    <a href="#main-content" class="visually-hidden focusable skip-link">
+      {{ 'Skip to main content'|t }}
+    </a>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token|raw }}">
+  </body>
+</html>

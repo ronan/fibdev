@@ -1,0 +1,324 @@
+.node--type-resource {
+
+  &.node--view-mode-teaser,
+  &.node--view-mode-teaser-w-link,
+  &.node--view-mode-teaser-w-file {
+    height: 100%;
+    position: relative;
+
+    a.field-group-link {
+
+      &:hover {
+
+        .group-right {
+
+          .field--name-node-title h3 {
+            @include underline-hover();
+            color: $blue-dark;
+          }
+        }
+
+        .group-footer {
+
+          .field--name-field-topic {
+
+            > .field__item {
+              text-decoration: none;
+            }
+          }
+        }
+      }
+    }
+
+    .group-wrapper {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-top: 120%;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: $teal-light;
+      }
+
+      .group-left {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+
+        .field--name-field-teaser-image {
+
+          &::after {
+            position: absolute;
+            top: 0;
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: $teal-light;
+            opacity: 0.8;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+
+      .group-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 30px 30px 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        > div {
+          position: relative;
+        }
+
+        .field--name-field-date {
+          font-size: 16px;
+          line-height: 22px;
+          color: $blue-dark;
+          letter-spacing: 1px;
+          font-weight: bold;
+          margin-bottom: 5px;
+          margin-top: 10px;
+        }
+
+        .field--name-node-title h3 {
+          @include underline-effect();
+        }
+
+        .field--name-field-author {
+          margin-top: auto;
+          font-size: 16px;
+          line-height: 19px;
+
+          .field__label {
+            display: inline;
+          }
+
+          .field__item {
+            display: inline;
+          }
+        }
+      }
+    }
+
+    &.is-featured .group-wrapper .group-right {
+      padding-top: 15px;
+    }
+
+    .group-footer {
+
+      .field--name-field-topic {
+
+        > .field__item {
+          display: inline;
+          font-size: 12px;
+          line-height: 22px;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+
+          > span {
+            text-decoration: underline;
+          }
+
+          &::after {
+            content: ', ';
+          }
+
+          &:last-child::after {
+            content: '';
+          }
+        }
+      }
+    }
+
+    .field--name-field-featured {
+      margin-top: -15px;
+      margin-bottom: 5px;
+      padding: 0 10px;
+      margin-left: -10px;
+      background: $blue-dark;
+      color: $teal;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+  }
+
+  &.node--view-mode-banner {
+    position: relative;
+    display: flex;
+    padding-top: 35px;
+
+    &.no-image {
+
+      .group-left {
+        width: 66.66%;
+
+        @media screen and (max-width: 850px) and (min-width: 650px) {
+          width: 80%;
+        }
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+        }
+      }
+    }
+
+    &.has-image {
+
+      @media screen and (max-width: 650px) {
+        flex-direction: column-reverse;
+      }
+
+      .group-left {
+        width: 50%;
+        padding-right: 20px;
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+          padding: 20px 0 0 0;
+        }
+      }
+
+      .group-right {
+        width: 50%;
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+        }
+      }
+    }
+
+    .group-left {
+      height: 100%;
+    }
+
+    .group-right {
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .field--name-field-topic {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $blue-dark;
+      margin-bottom: 20px;
+      @include title-box($teal);
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    h1 {
+      color: $blue-dark;
+      font-size: 50px;
+      line-height: 58px;
+
+      @media screen and (max-width: 850px) and (min-width: 600px) {
+        font-size: 42px;
+        line-height: 50px;
+      }
+
+      @media screen and (max-width: 600px) {
+        font-size: 36px;
+        line-height: 42px;
+      }
+    }
+
+    .field--name-field-date {
+      font-size: 20px;
+      font-weight: bold;
+      color: $blue-dark;
+      margin-bottom: 5px;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 19px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 18px;
+      }
+    }
+
+    .field--name-field-author {
+      font-size: 20px;
+      font-weight: bold;
+      color: $blue-dark;
+
+      @media screen and (max-width: 700px) and (min-width: 450px) {
+        font-size: 19px;
+      }
+
+      @media screen and (max-width: 450px) {
+        font-size: 18px;
+      }
+
+      .field__label {
+        display: inline-block;
+      }
+
+      .field__item {
+        display: inline-block;
+      }
+    }
+
+    .social-sharing-buttons {
+      justify-content: left;
+      margin: 25px 0;
+
+      .share-label {
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      svg {
+        fill: #7C8F99;
+      }
+    }
+  }
+
+  &.node--view-mode-full {
+
+    .field--name-field-description {
+      margin: 40px 0;
+    }
+
+    .field--name-field-resource {
+      margin: 80px 0;
+    }
+
+    .field--name-field-file a {
+      @include button();
+    }
+  }
+}

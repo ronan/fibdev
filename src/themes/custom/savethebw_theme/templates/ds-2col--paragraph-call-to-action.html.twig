@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Display Suite 2 column template.
+ *
+ * Available variables:
+ * - outer_wrapper: outer wrapper element
+ * - left_wrapper: wrapper element around left region
+ * - right_wrapper: wrapper element around right region
+ * - attributes: layout attributes
+ * - left_attributes: attributes for left region
+ * - right_attributes: attributes for right region
+ * - left: content of left region
+ * - right: content of right region
+ */
+#}
+<{{ outer_wrapper }}{{ attributes.addClass('ds-2col', 'clearfix') }}>
+  {% if has_wave %}{# <span aria-hidden="true" class="wave"></span> #}{% endif %}
+
+  {{ title_suffix.contextual_links }}
+  <div class="ds-2col--inner">
+    <div class="group-wrapper">
+      <{{ left_wrapper }}{{ left_attributes.addClass('group-left') }}>
+        {{ left }}
+      </{{ left_wrapper }}>
+
+      <{{ right_wrapper }}{{ right_attributes.addClass('group-right') }}>
+        {{ right }}
+      </{{ right_wrapper }}>
+    </div>
+  </div>
+</{{ outer_wrapper }}>

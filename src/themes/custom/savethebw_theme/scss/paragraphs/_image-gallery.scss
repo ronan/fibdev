@@ -1,0 +1,45 @@
+.paragraph--type-image-gallery {
+  text-align: center;
+
+  .field--name-field-lead-in-text {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .field--name-field-images {
+
+    > .field__item {
+
+      &:hover {
+
+        .paragraph--type-image {
+
+          .field--name-field-caption {
+            transform: none;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.paragraph--type-image {
+
+  .field--name-field-caption {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 25px;
+    background-color: rgba(237, 244, 245, 0.93) !important;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.5s;
+    text-align: left;
+  }
+
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+}

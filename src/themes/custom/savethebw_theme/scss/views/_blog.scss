@@ -1,0 +1,188 @@
+.view-blog {
+  .view-filters {
+    padding-bottom: 25px;
+
+    .fieldset-legend {
+      @include sr-only();
+    }
+
+    .form-radios {
+      display: flex;
+      justify-content: center;
+
+      @media screen and(max-width: 1050px) {
+        flex-wrap: wrap;
+      }
+
+      .radio {
+        padding: 0;
+
+        @media screen and(max-width: 1050px) {
+          margin-bottom: 10px;
+        }
+      }
+
+      input[type='radio'] {
+        @include sr-only();
+
+        &:checked + label {
+          @include button($teal, $blue-dark, transparent);
+          padding: 13px 25px;
+          
+          &::before {
+            border-width: 2px !important;
+            border-color: $blue-dark !important;
+            transform: none !important;
+          }
+        }
+      }
+
+      label {
+        @include button($blue-dark, #fff, transparent);
+        cursor: pointer;
+        padding: 13px 25px;
+
+        &::before {
+          border-color: #fff !important;
+          border-radius: 0 !important;
+          border-width: 2px !important;
+          transform: none !important;
+        }
+      }
+    }
+
+    label[for^='edit-key'] {
+      @include sr-only();
+    }
+
+    .views-exposed-form {
+      padding-bottom: 50px;
+
+      > .form-row {
+        display: block;
+      }
+
+      .keyword-search-container {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding-bottom: 15px;
+
+        .form-type-textfield {
+          border-color: #71848e;
+          border-style: solid;
+          border-width: 1px 0 1px 1px !important;
+          border-width: 1px;
+          margin: 0;
+          min-width: 300px;
+          padding: 10px;
+
+          input {
+            border: 0;
+            background: transparent;
+          }
+        }
+
+        .form-actions {
+          border-color: #71848E;
+          border-style: solid;
+          border-width: 1px 1px 1px 0 !important;
+          border-width: 1px;
+          margin: 0;
+          overflow: hidden;
+          pointer-events: none;
+          position: relative;
+          width: 38px;
+
+          &::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2371848E' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M23.809 21.646l-6.205-6.205c1.167-1.605 1.857-3.579 1.857-5.711 0-5.365-4.365-9.73-9.731-9.73-5.365 0-9.73 4.365-9.73 9.73 0 5.366 4.365 9.73 9.73 9.73 2.034 0 3.923-.627 5.487-1.698l6.238 6.238 2.354-2.354zm-20.955-11.916c0-3.792 3.085-6.877 6.877-6.877s6.877 3.085 6.877 6.877-3.085 6.877-6.877 6.877c-3.793 0-6.877-3.085-6.877-6.877z'/%3E%3C/svg%3E");            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            content: '';
+            display: block;
+            height: 20px;
+            position: absolute;
+            top: calc(50% - 10px);
+            transform: scaleX(-1);
+            width: 20px;
+          }
+
+          input {
+            background: transparent;
+            border: 0;
+            height: 100%;
+            pointer-events: all;
+            text-indent: -1000px;
+          }
+        }
+      }
+    }
+  }
+
+  .attachment-before {
+    display: flex;
+    padding-bottom: 120px;
+
+    .views-element-container:first-of-type {
+      flex: 66.66%;
+      padding-right: 40px;
+    }
+
+    .views-element-container:last-of-type{
+      flex: 33.33%;
+
+      .views-row {
+        margin-bottom: 20px;
+
+        &::after {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 3px;
+          background: #707070;
+          opacity: 0.13;
+          border-radius: 10px;
+          margin-top: 20px;
+        }
+
+        &:last-child {
+
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  &.view-display-id-block_2 {
+
+    .views-infinite-scroll-content-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0 -20px;
+
+      @media screen and (max-width: 700px) and (min-width: 400px) {
+        margin: 0 -15px;
+      }
+
+      .views-row {
+        flex: 0 0 33.33%;
+        padding: 0 20px;
+        margin-bottom: 50px;
+
+        @media screen and (max-width: 800px) and (min-width: 500px) {
+          flex: 0 0 50%;
+          padding: 0 15px;
+          margin-bottom: 40px;
+        }
+
+        @media screen and (max-width: 500px) {
+          flex: 0 0 100%;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+}

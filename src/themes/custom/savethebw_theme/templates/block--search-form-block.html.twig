@@ -1,0 +1,47 @@
+{% extends "@bootstrap_barrio/block/block.html.twig" %}
+{#
+/**
+ * @file
+ * Bartik's theme implementation for a search form block. Extends Classy's
+ * search form block template.
+ *
+ * Available variables:
+ * - content: The content of this block.
+ * - content_attributes: A list of HTML attributes applied to the main content
+ *   tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ * @see search_preprocess_block()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% block content %}
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#site-search">
+    <span class="sr-only">Search the site</span>
+    <span aria-hidden="true">
+      <svg width="27.539" height="27.539" viewBox="0 0 27.539 27.539">
+        <g id="Group_406" data-name="Group 406" transform="translate(-158.371 -186.934)">
+          <circle id="Ellipse_335" data-name="Ellipse 335" cx="9.959" cy="9.959" r="9.959" transform="translate(164.493 188.434)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3"/>
+          <line id="Line_170" data-name="Line 170" y1="7.978" x2="7.978" transform="translate(159.432 205.435)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="3"/>
+        </g>
+      </svg>
+    </span>
+  </button>
+  <div class="modal fade site-search" id="site-search" tabindex="-1" aria-labelledby="site-search-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-header">
+        <h2 class="modal-title" id="site-search-label">Search site</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-content">
+        {{ parent() }}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+

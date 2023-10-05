@@ -1,6 +1,23 @@
 #!/bin/bash
 set -e
 
+echo << EOM
+
+
+💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
+
+
+     Starting upgrade from 💧9️⃣ to 💧🔟
+
+
+💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
+
+
+EOM
+
+# git switch --force-create d9-10-d10
+
+
 echo "🔄 Reset upgrade destination ..."
 cd /workspace/drupal10
 git restore .
@@ -11,90 +28,57 @@ cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal10
 echo "📄 Copy local settings ..."
 cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.php
 
-# rm -rf vendor web/modules/composer composer.lock
+echo "🖍️ Installing updated custom themes/modules"
+cp -rf /workspace/src/themes/custom /workspace/drupal10/web/themes/
+cp -rf /workspace/src/modules/custom /workspace/drupal10/web/modules/
 
-echo "🎼 Composer install ..."
-composer10 install
+# echo "❌ Drush disable rogue modules ..."
+# drush10 pm:uninstall \
+#                     address                                 \
+#                     ckeditor_bootstrap_grid                 \
+#                     select2boxes                            \
+#                     path_redirect_import                    \
+#                     color                                   \
+#                     quickedit                               \
+#                     devel_entity_updates                    \
+#                     display_field_copy                      \
+#                     scheduled_updates                       \
+#                     imce                                    \
+#                     responsive_menu                         \
+#                     adminimal_admin_toolbar                 \
+#                     fixed_text_link_formatter
 
 echo "🪡  Remove patches ..."
 cat /workspace/inbox/code/composer.json | jq 'del(.. | .patches?)' > /workspace/drupal10/composer.json
 
+echo "🪣 Remove repositories"
 composer10 config --global discard-changes true
+composer10 config --unset repositories
+composer10 config repositories.drupal composer https://packages.drupal.org/8
 
-# echo "🪣 Remove repositories"
-# composer10 config repositories.x vcs https://github.com/foo/bar
-# composer10 config --unset repositories.0
-# composer10 config --unset repositories.1
-# composer10 config --unset repositories.x
+echo "🗑️ Remove outdated pantheon upstream ..." 
+composer10 remove --no-update --no-audit "pantheon-upstreams/upstream-configuration"
 
+echo "⬆️ Updating core to the latest 10.x version ..." 
+composer10 require --no-update --ignore-platform-req=php 'drupal/core:^10'
 
-# echo "🛠️  Add latest drush ..."
-# composer10 require drush/drush
-echo "🧰 Add developer modules ..."
-composer10 require --no-install --no-audit --ignore-platform-req=php drush/drush
+echo "📌 Unpinning module versions ..."
+# composer10 show --direct -f json | jq -r '.installed[] | "\(.name)"' > /workspace/outbox/updatable-modules.txt
+cat /workspace/outbox/updatable-modules.txt | tr "\n" " " | xargs composer10 require --no-update --no-audit --ignore-platform-req=php
 
+echo "🗑️ Composer remove rogue modules ..." 
+cat /workspace/outbox/unupdatable-modules.txt | tr "\n" " " | xargs composer10 remove --no-update --no-audit
 
-# echo "❌ Disable rogue modules ..."
-drush10 pm:uninstall address \
-                     ckeditor_bootstrap_grid \
-                     ckeditor_bootstrap_grid \
-                     select2boxes \
-                     sliderwidget \
-                     path_redirect_import \
-                     color \
-                     quickedit \
-                     devel_entity_updates \
-                     display_field_copy \
-                     scheduled_updates \
-                     imce
+echo "📦 Composer update ..." 
+composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
 
-echo "🗑️ Remove rogue modules ..."
-composer10 remove --no-audit \
-                    "drupal/address" \
-                    "drupal/ckeditor_bootstrap_grid" \
-                    "drupal/select2boxes" \
-                    "drupal/sliderwidget" \
-                    "drupal/path_redirect_import" \
-                    "drupal/devel_entity_updates" \
-                    "drupal/display_field_copy" \
-                    "drupal/scheduled_updates" \
-                    "drupal/imce"
+echo "📦 Composer install ..." 
+composer10 install --ignore-platform-req=php
 
+echo "📦 Composer bump ..." 
+composer10 bump
 
-echo "📌 Unpinning module versions ..." 
-modules=`composer10 outdated --direct "drupal/*" -f json | jq -r '.installed[] | "\(.name)"' | tr "\n" " "`
-composer10 require --no-install --no-audit --with-all-dependencies --ignore-platform-req=php $modules
-
-
-echo "⬆️  Updating core and modules to lastest 9.x version ..."
-composer10 update --with-all-dependencies --ignore-platform-req=php
+echo "📀 Drush update db ..." 
 drush10 updb
 
-# echo "📦 Composer update ..." 
-# composer10 update --no-install --no-audit
-# echo "📦 Composer bump ..." 
-# composer10 bump
-# echo "📦 Composer install ..." 
-# composer10 install
-
-# echo "🔍 Running upgrade status ..."
-composer10 require --no-audit --ignore-platform-req=php --dev drupal/upgrade_status
-drush10 pm:enable upgrade_status
-# drush10 us-a --all  --ignore-custom --ignore-uninstalled > /workspace/outbox/upgrade-status.txt
-
-drush10 uli
-exit
-
-echo "⬆️ Updating core to the latest 10.x version" 
-composer10 require --ignore-platform-req=php --update-with-dependencies "drupal/core-recommended:^10"
-
-echo "🧩 Updating modules to the latest 10.x version" 
-composer10 require --ignore-platform-req=php --update-with-dependencies "drupal/*"
-
-# echo "🔍 Running upgrade status"
-# drush10 en upgrade_status
-# drush10 us-a --all  --ignore-custom --ignore-uninstalled > /workspace/outbox/upgrade-status.txt
-
-
-# echo "🧱 Composer install ..."
-# yes | composer9 install --no-interaction
+drush10 uli admin/reports/status

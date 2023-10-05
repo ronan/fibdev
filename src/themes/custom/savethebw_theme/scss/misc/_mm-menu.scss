@@ -1,0 +1,25 @@
+.mm-menu {
+  font-weight: bold;
+
+  .mm-panel,
+  .mm-navbar  {
+    background: $blue-dark;
+  }
+
+  .mm-navbar {
+    text-transform: uppercase;
+  }
+
+  a {
+    color: white !important;
+  }
+
+  .mm-btn::after,
+  .mm-btn_prev::before {
+    border-color: $teal !important;
+  }
+}
+
+.mm-wrapper {
+  overflow-x: unset;
+}

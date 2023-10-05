@@ -20,7 +20,9 @@ then
     cp -rf /workspace/inbox/code /workspace/drupal9
     composer9 install --no-interaction --ignore-platform-req=php
 
+    rm -rf /workspace/drupal10
     cp -rf /workspace/inbox/code /workspace/drupal10
+    composer10 require --no-install --with-all-dependencies --ignore-platform-req=php drush/drush
     composer10 install --no-interaction --ignore-platform-req=php
 else
     echo "😵 Please place the site in /workspace/inbox/code"

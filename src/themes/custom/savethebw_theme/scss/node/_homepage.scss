@@ -1,0 +1,38 @@
+.node--type-homepage {
+
+  &.node--view-mode-banner {
+    position: relative;
+
+    .field--name-field-banner-items {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      margin-left: -50vw;
+
+      > .field__item {
+
+        .slick__slide {
+          transition: opacity 0.5s linear 0s !important;
+        }
+      }
+    }
+
+    .inline-wave svg {
+      bottom: -1px;
+      height: auto;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      transform: translateX(-50vw);
+      width: 100vw;
+
+      path {
+        transition: all 0.2s linear;
+
+        body.first-wave-gray & {
+          fill: #edf4f5;
+        }
+      }
+    }
+  }
+}

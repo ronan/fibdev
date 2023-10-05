@@ -1,0 +1,30 @@
+global-styling:
+  version: VERSION
+  js:
+    dist/bootstrap.min.js: {}
+    dist/savethebw.tabs.js: {}
+    dist/savethebw.flyouts.js: {}
+    dist/savethebw.nav.js: {}
+    dist/savethebw.wave.js: {}
+    dist/savethebw.slides.js: {}
+    dist/savethebw.js: {}
+    # dist/savethebw.animations.js:
+    #   attributes:
+    #     async: true
+    #   preprocess: false
+  css:
+    theme:
+      https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css: { external: true }
+      dist/style.css: {}
+polyfills:
+  header: true
+  js:
+    dist/polyfills.js: {}
+justified-gallery:
+  version: 1.0
+  css:
+    theme:
+      scss/misc/justifiedGallery.min.css: {}
+  js:
+    js/jquery.justifiedGallery.min.js: {}
+    js/savethebw.gallery.js: {}
