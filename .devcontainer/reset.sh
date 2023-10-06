@@ -73,23 +73,13 @@ else
     drush10 si --db-url=mysql://root:root@db/drupal10 --site-name="D10 Site" -y
 fi
 
-
-# echo "📁 Adding custom code directories ..."
-# dirs=( "modules" "themes" "sites" "layouts" )
-# for dir in "${dirs[@]}"
-# do
-#     if [ ! -f "/workspace/src/$dir" ]
-#     then
-#         cp -rf "/workspace/backdrop/$dir" "/workspace/src/"
-#     fi
-#     rm -rf "/workspace/backdrop/$dir"
-#     ln -fs "/workspace/src/$dir" "/workspace/backdrop/$dir"
-#     chmod -R a+w "/workspace/src/$dir"
-# done
+composer10 show --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"' > /workspace/outbox/installed-start.txt
 
 echo "👇 Drupal 9 site login"
 drush9 uli
-# echo "👇 Drupal 10 site login"
-# drush10 uli
+echo "👇 Drupal 10 site login"
+drush10 uli
+
+
 
 echo "🎉 🎉 🎉"
