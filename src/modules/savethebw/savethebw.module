@@ -376,7 +376,7 @@ function savethebw_preprocess_field__field_background_video(&$vars) {
   // for the video field.
   if ($entity->hasField('field_background_image') && !$entity->field_background_image->isEmpty()) {
     $image = $entity->field_background_image->first();
-    $poster = \Drupal::service('file_url_generator')->generateAbsoluteString($image->entity->getFileUri());
+    $poster = file_create_url($image->entity->getFileUri());
     if (!empty($vars['items'][0]['content']['#player_attributes'])) {
       $vars['items'][0]['content']['#player_attributes']['poster'] = $poster;
     }

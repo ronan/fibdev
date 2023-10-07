@@ -22,6 +22,11 @@ then
 
     rm -rf /workspace/drupal10
     cp -rf /workspace/inbox/code /workspace/drupal10
+
+    # extract custom modules/themes to /src
+    # ln -s /workspace/drupal10/web/modules/custom /src/modules
+    # ln -s /workspace/drupal10/web/themes/custom /src/themes
+
     composer10 require --no-install --with-all-dependencies --ignore-platform-req=php drush/drush
     composer10 install --no-interaction --ignore-platform-req=php
 else
