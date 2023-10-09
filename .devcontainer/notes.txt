@@ -18,6 +18,18 @@
 
 git clone https://git.drupalcode.org/issue/path_redirect_import-3373025.git
 
+git clone https://git.drupalcode.org/issue/scheduled_updates-3172330.git scheduled_updates
+cd scheduled_updates
+git fetch "https://git.drupalcode.org/issue/scheduled_updates-3172330.git" '3172330-module-is-not'
+git checkout -b 'scheduled_updates-3172330-3172330-module-is-not' FETCH_HEAD
+git clone -b 3172330-module-is-not https://git.drupalcode.org/issue/scheduled_updates-3172330.git scheduled_updates
+
+echo "📌 Unpin module versions ..."
+cat /workspace/inbox/updatable-modules.txt | tr "\n" " " | xargs composer10 require --no-update --no-audit --ignore-platform-req=php
+
+# composer10 show --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"' > /workspace/outbox/installed-2.txt
+
+
 
 0) Pre-Prep 
     upgrade to latest 9x versions of everything

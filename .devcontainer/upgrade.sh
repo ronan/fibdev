@@ -1,13 +1,11 @@
 #!/bin/bash
 set -e
 
-echo << EOM
+cat << EOM
 
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
 
-
      Starting upgrade from 💧9️⃣ to 💧🔟
-
 
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
 
@@ -28,25 +26,22 @@ cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal10
 echo "📄 Copy local settings ..."
 cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.php
 
-echo "🖍️ Installing updated custom themes/modules"
 echo "🔗 Symlinking custom themes/modules"
 rm -rf /workspace/drupal10/web/themes/custom
 rm -rf /workspace/drupal10/web/modules/custom
 ln -s /workspace/src/themes /workspace/drupal10/web/themes/custom
 ln -s /workspace/src/modules /workspace/drupal10/web/modules/custom
 
-echo "🩹 Update to latest 9.x"
-
 echo "🪣 Remove repositories"
 composer10 config --global discard-changes true
 composer10 config --unset repositories
-composer10 config --unset extra.
-# composer10 config repositories.drupal composer https://packages.drupal.org/8
 
 echo "🪡  Replace patches ..."
-jq -s 'del(.[0].extra.patches)[0] * .[1]' /workspace/inbox/code/composer.json /workspace/inbox/patches.json > /workspace/drupal10/composer.json
+jq -s 'del(.[0].extra.patches)[0] * .[1]' /workspace/inbox/code/composer.json /workspace/src/patches.json > /workspace/drupal10/composer.json
 
-echo "🗑️ Remove outdated pantheon upstream ..." 
+composer10 config repositories.drupal composer https://packages.drupal.org/8
+
+echo "🧹 Remove outdated pantheon upstream ..." 
 composer10 remove --no-update --no-audit "pantheon-upstreams/upstream-configuration"
 
 echo "⛙ Add merge plugin for webform"
@@ -59,15 +54,14 @@ composer10 remove --no-update --no-audit \
      drupal/console-extend-plugin \
      drupal/display_field_copy \
      drupal/fixed_text_link_formatter \
-     drupal/slider_widget \
-     drupal/scheduled_updates \
      drupal/path_redirect_import \
+     drupal/scheduled_updates \
+     drupal/slider_widget \
      fzaninotto/faker \
      gajus/dindent \
      kint-php/kint
 
 echo "📌 Unpin module versions ..."
-# cat /workspace/inbox/updatable-modules.txt | tr "\n" " " | xargs composer10 require --no-update --no-audit --ignore-platform-req=php
 composer10 require --no-update --no-audit --ignore-platform-req=php \
      composer/installers \
      drupal/address \
@@ -130,55 +124,49 @@ composer10 require --no-update --no-audit --ignore-platform-req=php \
 
 echo "📌 Pin module versions ..."
 composer10 require --no-update --no-audit --ignore-platform-req=php \
-     "drupal/search_exclude_nid:^2.0@alpha" \
-     "drupal/media_entity_browser:^2.0@alpha" \
-     "drupal/config_update:^2.0@alpha" \
-     "drupal/adminimal_theme:^1.7" \
-     "drupal/color:^1.0" \
-     "drupal/color_field:^3.0" \
-     "drupal/select2boxes:^2.0@alpha" \
-     "drupal/ief_table_view_mode:3.0.x-dev@dev" \
-     "drupal/inline_entity_form:^1.0@RC" \
-     "drupal/quickedit:^1.0" \
-     "drupal/ds:^3.15" \
-     "drupal/sliderwidget:2.x-dev@dev" \
-     "drupal/adminimal_admin_toolbar:1.x-dev@dev" \
-     "drupal/core:^9.5" \
-     "drupal/allowed_formats:^2.0" \
-     "drupal/linkit:^6.0" \
-     "drush/drush:^11" \
-     "drupal/better_exposed_filters:^6.0.3" \
-     "drupal/jquery_ui_slider:^2.0" \
-     "drupal/jquery_ui_datepicker:^2.0"
+     drupal/core:^9.5 \
+     drush/drush:^11 \
+     drupal/adminimal_admin_toolbar:1.x-dev@dev \
+     drupal/adminimal_theme:^1.7 \
+     drupal/allowed_formats:^2.0 \
+     drupal/better_exposed_filters:^6.0.3 \
+     drupal/color_field:^3.0 \
+     drupal/color:^1.0 \
+     drupal/config_update:^2.0@alpha \
+     drupal/ds:^3.15 \
+     drupal/ief_table_view_mode:3.0.x-dev@dev \
+     drupal/inline_entity_form:^1.0@RC \
+     drupal/jquery_ui_datepicker:^2.0 \
+     drupal/jquery_ui_slider:^2.0 \
+     drupal/linkit:^6.0 \
+     drupal/media_entity_browser:^2.0@alpha \
+     drupal/quickedit:^1.0 \
+     drupal/search_exclude_nid:^2.0@alpha \
+     drupal/select2boxes:^2.0@alpha \
+     drupal/sliderwidget:2.x-dev@dev
 
-echo "📦 Composer update ..." 
+echo "🆙 Composer update ..." 
 composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
 
-echo "📦 Composer install ..." 
+echo "💿 Composer install ..." 
 composer10 install --ignore-platform-req=php
 
-# composer10 show --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"' > /workspace/outbox/installed-2.txt
-
-echo "9️⃣ -> 🔟"
 echo "🔟 Updating core to the latest 10.x version ..." 
 composer10 require --no-update --ignore-platform-req=php 'drupal/core:^10'
 
-echo "📦 Composer update ..." 
+echo "🆙 Composer update ..." 
 composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
 
-echo "📦 Composer install ..." 
+echo "💿 Composer install ..." 
 composer10 install --ignore-platform-req=php
 
-# echo "📦 Composer bump ..." 
-# composer10 bump
+echo "👊 Composer bump ..." 
+composer10 bump
 
 # echo "❌ Drush disable rogue modules ..."
 # drush10 pm:uninstall ckeditor
 # drush10 pm:enable ckeditor5
 
-
-echo "📀 Drush update db ..." 
+echo "⏫ Drush update db ..." 
 drush10 updb
-
-
 drush10 uli admin/reports/status

@@ -1,0 +1,82 @@
+{
+    "repositories": {
+        "drupal/display_field_copy": {
+            "type": "package",
+            "package": {
+                "name": "drupal/display_field_copy",
+                "type": "drupal-module",
+                "version": "2.x-dev@dev",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/project/display_field_copy.git",
+                    "reference": "2.x"
+                }
+            }
+        },
+        "drupal/sliderwidget": {
+            "type": "package",
+            "package": {
+                "name": "drupal/sliderwidget",
+                "type": "drupal-module",
+                "version": "2.x-dev@dev",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/project/sliderwidget.git",
+                    "reference": "8.x-2.x"
+                }
+            }
+        },
+        "drupal/fixed_text_link_formatter": {
+          "type": "package",
+          "package": {
+              "name": "drupal/fixed_text_link_formatter",
+              "type": "drupal-module",
+              "version": "1.x-dev@dev",
+              "source": {
+                  "type": "git",
+                  "url": "https://git.drupalcode.org/project/fixed_text_link_formatter.git",
+                  "reference": "8.x-1.x"
+              }
+           }
+        },
+        "drupal/scheduled_update": {
+            "type": "package",
+            "package": {
+                "name": "drupal/scheduled_update",
+                "type": "drupal-module",
+                "version": "1.x-dev@dev",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/project/scheduled_update.git",
+                    "reference": "8.x-1.x"
+                }
+            }
+        },
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }      
+      },
+    "extra": {
+        "patches": {
+            "drupal/display_field_copy": {
+                "#3287010 Automated Drupal 10 compatibility fixes": "https://www.drupal.org/files/issues/2022-06-15/display_field_copy.2.x-dev.rector.patch"
+            },
+            "drupal/slider_widget": {
+                "#3157814 Drupal 9 - 10 support": "https://www.drupal.org/files/issues/2023-01-20/sliderwidget-Drupal_9-10_support-3157814-6-8.x.patch"
+            },
+            "drupal/scheduled_update": {
+              "#3172330 Drupal 10 compatibility fixes": "https://www.drupal.org/files/issues/2023-09-18/scheduled_updates-3172330-MR2-7ad4d02--20230918-2.diff"
+            },
+            "drupal/fixed_text_link_formatter": {
+                "#3172330 Drupal 10 compatibility fixes": "https://git.drupalcode.org/project/fixed_text_link_formatter/-/merge_requests/3.patch"
+            }
+            
+      },
+      "merge-plugin": {
+        "include": [
+            "web/modules/composer/webform/composer.libraries.json"
+        ]
+      }
+    }
+}
