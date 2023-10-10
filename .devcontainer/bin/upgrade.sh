@@ -1,11 +1,17 @@
 #!/bin/bash
-set -e
-
 cat << EOM
 
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
 
-     Starting upgrade from 💧9️⃣ to 💧🔟
+     
+  ═╦════╗
+   ║  [ d ]
+___╩___
+\      |      [ 9 ][ t ][ o ]  _________
+ \  🛟  |_[ - ][ d ][ 1 ][ 0 ]_/ o o o /
+  \__________________________________/
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
 
@@ -32,7 +38,7 @@ rm -rf /workspace/drupal10/web/modules/custom
 ln -s /workspace/src/themes /workspace/drupal10/web/themes/custom
 ln -s /workspace/src/modules /workspace/drupal10/web/modules/custom
 
-echo "🪣 Remove repositories"
+echo "🪣  Remove repositories"
 composer10 config --global discard-changes true
 composer10 config --unset repositories
 
@@ -145,19 +151,19 @@ composer10 require --no-update --no-audit --ignore-platform-req=php \
      drupal/select2boxes:^2.0@alpha \
      drupal/sliderwidget:2.x-dev@dev
 
-echo "🆙 Composer update ..." 
+echo "🆙 Composer update (9.x) ..." 
 composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
 
-echo "💿 Composer install ..." 
+echo "💾 Composer install (9.x) ..." 
 composer10 install --ignore-platform-req=php
 
 echo "🔟 Updating core to the latest 10.x version ..." 
 composer10 require --no-update --ignore-platform-req=php 'drupal/core:^10'
 
-echo "🆙 Composer update ..." 
+echo "🆙 Composer update (10.x) ..." 
 composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
 
-echo "💿 Composer install ..." 
+echo "💿 Composer install (10.x) ..." 
 composer10 install --ignore-platform-req=php
 
 echo "👊 Composer bump ..." 
@@ -170,3 +176,7 @@ composer10 bump
 echo "⏫ Drush update db ..." 
 drush10 updb
 drush10 uli admin/reports/status
+
+echo "👓 Peforming visual regression test ..."
+docker exec -it backstop backstop test
+echo "📊 http://localhost:3000/html_report/index.html?remote"

@@ -21,7 +21,18 @@ ___╩___
 - [x] Automatically restore from backup.
 - [x] Get bee (https://backdropcms.org/project/bee) working
 - [ ] Proxy files from prod
+  - [x] Option 1: Redirect in nginx.conf
+    - [ ] Exclude generated css/js
+  - [ ] Option 2: Configure base_url in Drupal to point to prod
+  - [ ] Option 3: Pull files from prod and cache and serve locally
 - [ ] Live previews
 - [x] Suppress debugging warning
 - [x] Allow for local module install via UI
 - [x] Get xdebug working for app container
+- [ ] Visual Regression testing
+  - [x] Determine urls to test
+    - [ ] Pull from top viewed pages if drupal is tracking that?
+    - [x] Crawl the site to a few levels deep
+  - [x] Run backstop js on new site vs d9 site (or prod)
+  - [ ] Fix issue where backstop.js exists during the report creation
+  - [ ] Upload or host report for client review

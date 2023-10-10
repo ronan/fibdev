@@ -1,0 +1,38 @@
+{
+  "viewports": [
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 768
+    }
+  ],
+  "scenarios": [
+    {{#TEST_URLS}}
+      {
+        "label": "{{.}}",
+        "url": "http://drupal10/{{.}}"
+      },
+    {{/TEST_URLS}}
+    {
+      "label": "Homepage",
+      "url": "http://drupal10/",
+      "delay": "1000"
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "bitmaps_reference",
+    "bitmaps_test": "bitmaps_test",
+    "engine_scripts": "engine_scripts",
+    "html_report": "html_report",
+    "ci_report": "ci_report"
+  },
+  "report": ["browser"],
+  "engine": "puppeteer",
+  "engineOptions": {
+    "args": ["--no-sandbox"]
+  },
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50,
+  "debug": false,
+  "debugWindow": false
+}

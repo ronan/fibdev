@@ -26,3 +26,8 @@ $databases['default']['default'] = array (
 );
 $settings['config_sync_directory'] = 'sites/default/files/config/sync';
 $settings['hash_salt'] = getenv("HASH_SALT");
+
+$settings['trusted_host_patterns'] = [
+  '^localhost$',
+  '^drupal9$',
+];

@@ -30,5 +30,4 @@ $config['system.performance']['js']['preprocess'] = FALSE;
 $settings['trusted_host_patterns'] = [
   '^localhost$',
   '^drupal10$',
-  '^drupal10\.local$'
 ];
