@@ -9,7 +9,7 @@ services:
       - ../:/workspace
     links:
       - d9gateway:drupal9
-      - d10gateway:drupal10
+      - gateway:drupal10
     env_file:
       - .env 
 
@@ -34,15 +34,16 @@ services:
     env_file:
       - .env
 
-  d10gateway:
+  gateway:
     image: nginx:1.25
     links:
       - d10app
+      - d9app
     ports:
       - "8010:80"
     volumes:
       - ../:/workspace
-      - ./drupal10/nginx.conf:/etc/nginx/nginx.conf
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf
 
   d10app:
     build:
@@ -52,6 +53,8 @@ services:
       - db
     volumes:
       - ../:/workspace
+      - ../src/modules:/workspace/drupal10/web/modules/custom
+      - ../src/themes:/workspace/drupal10/web/themes/custom
     env_file:
       - .env
  
@@ -85,7 +88,7 @@ services:
       - .env
     links:
       - d9gateway:drupal9
-      - d10gateway:drupal10
+      - gateway:drupal10
     ports:
         - 3000:3000
     volumes:

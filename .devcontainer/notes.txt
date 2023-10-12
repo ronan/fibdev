@@ -29,6 +29,11 @@ cat /workspace/inbox/updatable-modules.txt | tr "\n" " " | xargs composer10 requ
 
 # composer10 show --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"' > /workspace/outbox/installed-2.txt
 
+cd /src/modules;
+git clone "https://git.drupalcode.org/issue/video-3353255.git" -b 3353255-fix-undefined-error video
+
+
+yarn add jquery-once
 
 
 0) Pre-Prep 
@@ -60,3 +65,6 @@ wget --spider -r -l 3 https://www.savetheboundarywaters.org 2>&1 \
             | awk '{ print $3 }' \
             | grep -vi '\.\(css\|js\|png\|gif\|jpg\|jpeg\|pdf\|mp4\|svg\)' \
             > urls.txt
+
+
+drush10 uli admin/structure/paragraphs_type/homepage_banner_item/display

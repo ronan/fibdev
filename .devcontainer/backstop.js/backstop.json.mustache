@@ -1,22 +1,36 @@
 {
   "viewports": [
     {
+      "label": "phone",
+      "width": 320,
+      "height": 480
+    },
+    {
       "label": "tablet",
       "width": 1024,
       "height": 768
+    },
+    {
+      "label": "desktop",
+      "width": 1920,
+      "height": 1080
     }
   ],
   "scenarios": [
     {{#TEST_URLS}}
       {
         "label": "{{.}}",
-        "url": "http://drupal10/{{.}}"
+        "url": "https://abra:cadabra@dev-savethebw.pantheonsite.io{{.}}",
+        "referenceUrl": "https://www.savetheboundarywaters.org{{.}}",
+        "removeSelectors": [".visually-hidden", ".at-form"],
+        "delay": "500"
       },
     {{/TEST_URLS}}
     {
-      "label": "Homepage",
-      "url": "http://drupal10/",
-      "delay": "1000"
+        "label": "Main Nav",
+        "url": "http://drupal10",
+        "referenceUrl": "http://drupal9",
+        "removeSelectors": [".visually-hidden"]
     }
   ],
   "paths": {
@@ -31,8 +45,13 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "asyncCaptureLimit": 5,
-  "asyncCompareLimit": 50,
+  "misMatchThreshold": 0.5,
+  "asyncCaptureLimit": 1,
+  "asyncCompareLimit": 10,
+  "resembleOutputOptions": {
+    "ignoreAntialiasing": true,
+    "usePreciseMatching": true
+  },
   "debug": false,
   "debugWindow": false
 }

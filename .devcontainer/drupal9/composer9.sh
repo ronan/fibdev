@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yes | composer --working-dir=/workspace/drupal9/ -n "$@"
+COMPOSER_DISCARD_CHANGES=true yes | composer --working-dir=/workspace/drupal9/ -n $@

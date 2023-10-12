@@ -2,17 +2,17 @@
 cat << EOM
 
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
-
-     
-  ═╦════╗
-   ║  [ d ]
-___╩___
-\      |      [ 9 ][ t ][ o ]  _________
- \  🛟  |_[ - ][ d ][ 1 ][ 0 ]_/ o o o /
-  \__________________________________/
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
+  
+       
+    ═╦════╗
+     ║  [ d ]
+  ___╩___
+  \      |      [ 9 ][ t ][ o ]  _________
+   \  🛟  |_[ - ][ d ][ 1 ][ 0 ]_/ o o o /
+    \__________________________________/
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
 
 EOM
@@ -30,7 +30,7 @@ echo "🚚 Reset database ..."
 cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal10
 
 echo "📄 Copy local settings ..."
-cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.php
+cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.local.php
 
 echo "🔗 Symlinking custom themes/modules"
 rm -rf /workspace/drupal10/web/themes/custom
@@ -38,21 +38,20 @@ rm -rf /workspace/drupal10/web/modules/custom
 ln -s /workspace/src/themes /workspace/drupal10/web/themes/custom
 ln -s /workspace/src/modules /workspace/drupal10/web/modules/custom
 
-echo "🪣  Remove repositories"
-composer10 config --global discard-changes true
-composer10 config --unset repositories
-
 echo "🪡  Replace patches ..."
 jq -s 'del(.[0].extra.patches)[0] * .[1]' /workspace/inbox/code/composer.json /workspace/src/patches.json > /workspace/drupal10/composer.json
 
+echo "🧹  Clean composer config"
+composer10 config --global platform-check false
+composer10 config --global discard-changes true
+composer10 config --unset platform
+composer10 config --unset repositories
 composer10 config repositories.drupal composer https://packages.drupal.org/8
-
-echo "🧹 Remove outdated pantheon upstream ..." 
 composer10 remove --no-update --no-audit "pantheon-upstreams/upstream-configuration"
 
 echo "⛙ Add merge plugin for webform"
-composer10 require --no-update --no-audit --ignore-platform-req=php wikimedia/composer-merge-plugin
 composer10 config --no-plugins allow-plugins.wikimedia/composer-merge-plugin true
+composer10 require --no-update --no-audit --ignore-platform-reqs wikimedia/composer-merge-plugin
 
 echo "🗑️ Remove obsolete and patched modules ..." 
 composer10 remove --no-update --no-audit \
@@ -62,13 +61,14 @@ composer10 remove --no-update --no-audit \
      drupal/fixed_text_link_formatter \
      drupal/path_redirect_import \
      drupal/scheduled_updates \
-     drupal/slider_widget \
+     drupal/sliderwidget \
+     drupal/video \
      fzaninotto/faker \
      gajus/dindent \
      kint-php/kint
 
 echo "📌 Unpin module versions ..."
-composer10 require --no-update --no-audit --ignore-platform-req=php \
+composer10 require --no-update --no-audit --ignore-platform-reqs \
      composer/installers \
      drupal/address \
      drupal/admin_toolbar \
@@ -112,12 +112,10 @@ composer10 require --no-update --no-audit --ignore-platform-req=php \
      drupal/migrate_source_csv \
      drupal/sendgrid_integration \
      drupal/slick_views \
-     drupal/smart_date \
      drupal/svg_image \
      drupal/token \
      drupal/token_filter \
      drupal/twig_tweak \
-     drupal/video \
      drupal/views_ajax_history \
      drupal/views_block_filter_block \
      drupal/views_bootstrap \
@@ -129,7 +127,7 @@ composer10 require --no-update --no-audit --ignore-platform-req=php \
      drupal/youtube
 
 echo "📌 Pin module versions ..."
-composer10 require --no-update --no-audit --ignore-platform-req=php \
+composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/core:^9.5 \
      drush/drush:^11 \
      drupal/adminimal_admin_toolbar:1.x-dev@dev \
@@ -149,34 +147,23 @@ composer10 require --no-update --no-audit --ignore-platform-req=php \
      drupal/quickedit:^1.0 \
      drupal/search_exclude_nid:^2.0@alpha \
      drupal/select2boxes:^2.0@alpha \
-     drupal/sliderwidget:2.x-dev@dev
+     drupal/smart_date:^4.0
 
-echo "🆙 Composer update (9.x) ..." 
-composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
-
-echo "💾 Composer install (9.x) ..." 
-composer10 install --ignore-platform-req=php
-
-echo "🔟 Updating core to the latest 10.x version ..." 
-composer10 require --no-update --ignore-platform-req=php 'drupal/core:^10'
+echo "💾 Composer update (9.x) ..." 
+composer10 update --no-install --with-all-dependencies --ignore-platform-reqs
+ 
+echo "🔟 Update core to the latest 10.x version ..." 
+composer10 require --no-update --ignore-platform-reqs 'drupal/core:^10'
 
 echo "🆙 Composer update (10.x) ..." 
-composer10 update --no-install --with-all-dependencies --ignore-platform-req=php
+composer10 update --no-install --with-all-dependencies --ignore-platform-reqs
 
 echo "💿 Composer install (10.x) ..." 
-composer10 install --ignore-platform-req=php
+composer10 install --ignore-platform-reqs
 
 echo "👊 Composer bump ..." 
 composer10 bump
 
-# echo "❌ Drush disable rogue modules ..."
-# drush10 pm:uninstall ckeditor
-# drush10 pm:enable ckeditor5
-
 echo "⏫ Drush update db ..." 
 drush10 updb
 drush10 uli admin/reports/status
-
-echo "👓 Peforming visual regression test ..."
-docker exec -it backstop backstop test
-echo "📊 http://localhost:3000/html_report/index.html?remote"

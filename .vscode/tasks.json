@@ -6,7 +6,7 @@
         {
             "label": "Reset Environment",
             "type": "shell",
-            "command": "/workspace/.devcontainer/reset.sh",
+            "command": "/workspace/.devcontainer/bin/reset.sh",
             "problemMatcher": [],
             "presentation": {
                 "reveal": "always",

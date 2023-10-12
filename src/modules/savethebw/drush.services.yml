@@ -1,5 +1,0 @@
-services:
-  savethebw.commands:
-    class: \Drupal\savethebw\Commands\SavethebwDrushCommands
-    tags:
-      - { name: drush.command }

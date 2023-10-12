@@ -18,47 +18,37 @@ then
     echo "📂 Copying source from inbox ..."
     rm -rf /workspace/drupal9
     cp -rf /workspace/inbox/code /workspace/drupal9
+    composer9 require --no-install --with-all-dependencies --ignore-platform-req=php drush/drush
     composer9 install --no-interaction --ignore-platform-req=php
 
     rm -rf /workspace/drupal10
     cp -rf /workspace/inbox/code /workspace/drupal10
-
-    # extract custom modules/themes to /src
-    # ln -s /workspace/drupal10/web/modules/custom /src/modules
-    # ln -s /workspace/drupal10/web/themes/custom /src/themes
-
     composer10 require --no-install --with-all-dependencies --ignore-platform-req=php drush/drush
     composer10 install --no-interaction --ignore-platform-req=php
+
+    # extract custom modules/themes to /src
+    if [! -d /src/modules ]
+    then
+        cp /workspace/drupal10/web/modules/custom /src/modules
+    fi
+    if [! -d /src/themes ]
+    then
+        cp /workspace/drupal10/web/themes/custom /src/themes
+    fi
 else
     echo "😵 Please place the site in /workspace/inbox/code"
     exit
-
-    for v in 9 10; do
-        echo "💧 Composing a fresh copy of Drupal $v ..."
-
-        rm -rf "drupal$v"
-        mkdir -p "drupal$v"
-        
-        cd "drupal$v"
-        rm -f ./composer.lock
-        [ -f "/workspace/src/drupal$v/composer.json" ] && ln -fs /workspace/src/composer.json ./composer.json
-        [ -f "/workspace/src/drupal$v/composer.lock" ] && ln -fs /workspace/src/composer.lock ./composer.lock
-        if [ ! -f "composer.json" ] 
-        then
-            yes | composer create-project "drupal/recommended-project:^$v" ./
-        fi
-        yes | composer require drush/drush  --ignore-platform-req=php
-        composer install --no-interaction --ignore-platform-req=php
-
-        cd /workspace
-    done
 fi
 
+if [ -d /workspace/inbox/files ]
+then
+    rm -rf /workspace/drupal10/web/sites/default/files
+    ln -s /workspace/inbox/files /workspace/drupal10/web/sites/default/files
+fi
 
 echo "📝 Adding local settings ..."
 cp -f /workspace/.devcontainer/drupal9/settings.local.php /workspace/drupal9/web/sites/default/settings.php
 cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.php
-
 
 if [ -f /workspace/inbox/*sql ]
 then
@@ -78,30 +68,6 @@ else
 fi
 
 composer10 show --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"' > /workspace/outbox/modules.txt
-
-echo "🕷️ Crawling site to gather urls to test"
-mkdir -p /data/wget
-cd /data/wget
-
-wget --spider -r --reject jpg,png,js,css,svg,ico,mp4 --delete-after -l $TEST_DEPTH http://drupal9/ 2>&1 \
-    | grep '^--' \
-    | awk '{ print $3 }' \
-    | uniq \
-    | sed "s|http://drupal9/||g" \
-    | sed '/^$/d' \
-    | uniq \
-    > /workspace/outbox/urls.txt
-
-if [ ! -f /workspace/outbox/urls.txt ]
-then 
-    cp /workspace/outbox/urls.txt /workspace/inbox/urls.txt
-fi
-
-echo "🐒 Creating a backstop.json file"
-. /usr/bin/mo
-export TEST_URLS=(`head -n 5 /workspace/inbox/urls.txt | tr "\n" " "`)
-cat /workspace/.devcontainer/backstop.js/backstop.json.mustache | mo > /workspace/data/backstop/backstop.json
-docker exec -it backstop backstop reference
 
 echo "🎉 🎉 🎉"
 echo "👇 Drupal 9 login"
