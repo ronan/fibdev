@@ -1,71 +1,45 @@
 #!/bin/bash
+set -e
+
 cat << EOM
-
-💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
-  
-       
+                                   🌤️
     ═╦════╗
-     ║  [ d ]
-  ___╩___
-  \      |      [ 9 ][ t ][ o ]  _________
-   \  🛟  |_[ - ][ d ][ 1 ][ 0 ]_/ o o o /
+     ║  [ | ]
+  ___╩___      [ | ][ | ][ | ]
+  \   🛟  |     [ 9️⃣ ][ ⇨ ][ 🔟]  _________
+   \     |_[| ][ | ][ | ][ | ]_/ o o o /
     \__________________________________/
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-  
 💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧💧
-
 EOM
 
-# git switch --force-create d9-10-d10
+
+cd /workspace/drupal10
 
 echo "🔄 Reset upgrade destination ..."
-cd /workspace/drupal10
 git restore .
+git clean -f -x
 
-echo "🧼 Clean old composer stuff ..."
-rm -rf vendor composer.lock web/modules/composer
-
-echo "🚚 Reset database ..."
-cat /workspace/inbox/*sql | mariadb -h db -u root -proot drupal10
-
-echo "📄 Copy local settings ..."
-cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.local.php
-
-echo "🔗 Symlinking custom themes/modules"
-rm -rf /workspace/drupal10/web/themes/custom
-rm -rf /workspace/drupal10/web/modules/custom
-ln -s /workspace/src/themes /workspace/drupal10/web/themes/custom
-ln -s /workspace/src/modules /workspace/drupal10/web/modules/custom
-
-echo "🪡  Replace patches ..."
-jq -s 'del(.[0].extra.patches)[0] * .[1]' /workspace/inbox/code/composer.json /workspace/src/patches.json > /workspace/drupal10/composer.json
-
-echo "🧹  Clean composer config"
-composer10 config --global platform-check false
-composer10 config --global discard-changes true
-composer10 config --unset platform
-composer10 config --unset repositories
-composer10 config repositories.drupal composer https://packages.drupal.org/8
-composer10 remove --no-update --no-audit "pantheon-upstreams/upstream-configuration"
-
-echo "⛙ Add merge plugin for webform"
+echo "📚 Add Required libraries ..."
+composer10 config --no-plugins allow-plugins.phpstan/extension-installer true
 composer10 config --no-plugins allow-plugins.wikimedia/composer-merge-plugin true
-composer10 require --no-update --no-audit --ignore-platform-reqs wikimedia/composer-merge-plugin
+composer10 config --json extra.merge-plugin '{"include":["web/modules/contrib/webform/composer.libraries.json","web/modules/custom/savethebw/composer.libraries.json"]}'
 
-echo "🗑️ Remove obsolete and patched modules ..." 
-composer10 remove --no-update --no-audit \
-     drupal/console \
-     drupal/console-extend-plugin \
-     drupal/display_field_copy \
-     drupal/fixed_text_link_formatter \
-     drupal/path_redirect_import \
-     drupal/scheduled_updates \
-     drupal/sliderwidget \
-     drupal/video \
-     fzaninotto/faker \
-     gajus/dindent \
-     kint-php/kint
+composer10 config minimum-stability dev
+composer10 config --unset repositories
+composer10 config repositories.pantheon_upstream path upstream-configuration
+composer10 config repositories.drupal composer https://packages.drupal.org/8
+composer10 config repositories.fixed_text_link_formatter git https://git.drupalcode.org/issue/fixed_text_link_formatter-3287603.git
+composer10 config repositories.sliderwidget git https://git.drupalcode.org/issue/sliderwidget-3157814.git
+composer10 config repositories.path_redirect_import git https://git.drupalcode.org/issue/path_redirect_import-3373025.git
+
+echo "⬆️  Upgrade core ..."
+composer10 require --no-update --no-audit --ignore-platform-reqs \
+     drupal/core:^10.1 \
+     drupal/core-recommended:^10.1
+
+echo "⬆️  Upgrade core-dev ..."
+composer10 require --dev --no-update --no-audit --ignore-platform-reqs \
+     drupal/core-dev:^10.1
 
 echo "📌 Unpin module versions ..."
 composer10 require --no-update --no-audit --ignore-platform-reqs \
@@ -83,6 +57,7 @@ composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/dblog_filter \
      drupal/devel \
      drupal/devel_entity_updates \
+     drupal/display_field_copy \
      drupal/editor_file \
      drupal/entity_browser \
      drupal/entity_usage \
@@ -98,10 +73,12 @@ composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/linked_field \
      drupal/menu_item_extras \
      drupal/metatag \
+     drupal/multiple_fields_remove_button:^2.2 \
      drupal/name \
      drupal/paragraphs \
      drupal/paragraphs_limits \
      drupal/pathauto \
+     drupal/path_redirect_import:dev-3373025-update-to-support \
      drupal/protected_pages \
      drupal/quick_node_clone \
      drupal/r4032login \
@@ -116,6 +93,7 @@ composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/token \
      drupal/token_filter \
      drupal/twig_tweak \
+     drupal/video:^3.0 \
      drupal/views_ajax_history \
      drupal/views_block_filter_block \
      drupal/views_bootstrap \
@@ -124,12 +102,8 @@ composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/views_infinite_scroll \
      drupal/viewsreference \
      drupal/webform \
-     drupal/youtube
-
-echo "📌 Pin module versions ..."
-composer10 require --no-update --no-audit --ignore-platform-reqs \
-     drupal/core:^9.5 \
-     drush/drush:^11 \
+     drupal/youtube \
+     wikimedia/composer-merge-plugin \
      drupal/adminimal_admin_toolbar:1.x-dev@dev \
      drupal/adminimal_theme:^1.7 \
      drupal/allowed_formats:^2.0 \
@@ -145,25 +119,25 @@ composer10 require --no-update --no-audit --ignore-platform-reqs \
      drupal/linkit:^6.0 \
      drupal/media_entity_browser:^2.0@alpha \
      drupal/quickedit:^1.0 \
+     drupal/scheduled_updates:2.x-dev@dev \
      drupal/search_exclude_nid:^2.0@alpha \
      drupal/select2boxes:^2.0@alpha \
-     drupal/smart_date:^4.0
+     drupal/smart_date:^4.0 \
+     drupal/sliderwidget:dev-3157814-drupal-10-support \
+     drupal/fixed_text_link_formatter:dev-3287603-automated-drupal-10
 
-echo "💾 Composer update (9.x) ..." 
-composer10 update --no-install --with-all-dependencies --ignore-platform-reqs
- 
-echo "🔟 Update core to the latest 10.x version ..." 
-composer10 require --no-update --ignore-platform-reqs 'drupal/core:^10'
-
-echo "🆙 Composer update (10.x) ..." 
+echo "💾 Composer update ..."
 composer10 update --no-install --with-all-dependencies --ignore-platform-reqs
 
-echo "💿 Composer install (10.x) ..." 
+echo "💿 Composer install ..."
 composer10 install --ignore-platform-reqs
 
-echo "👊 Composer bump ..." 
-composer10 bump
+echo "📝 Adding local settings ..."
+cp -f /workspace/.devcontainer/drupal10/settings.local.php /workspace/drupal10/web/sites/default/settings.local.php
 
-echo "⏫ Drush update db ..." 
+# cp -r /workspace/src/modules/* /workspace/drupal10/web/modules/custom/
+# cp -r /workspace/src/themes/* /workspace/drupal10/web/themes/custom/
+
 drush10 updb
+drush10 cr
 drush10 uli admin/reports/status
