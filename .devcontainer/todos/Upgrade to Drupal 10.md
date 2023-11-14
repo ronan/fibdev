@@ -2,6 +2,7 @@
 
 - [ ] Set up Site
 - [ ] Create pre-upgrade reference
+  - [ ] Get current module versions
 - [ ] Upgrade Drupal
   - [ ] Update Contrib Code
     - [ ] Upgrade compatible modules

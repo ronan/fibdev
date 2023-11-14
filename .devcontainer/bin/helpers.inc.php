@@ -18,45 +18,46 @@ function say($msg, $icon = "ℹ️") {
 
 function err($err) {
     todo_state($GLOBALS['current_todo'], '!');
-    todid("🛑");
+    todid("🛑", "failed");
 
     echo("\n\n$err\n\n");
     die;
 }
 
-function ok() {
-    todo_check($GLOBALS['current_todo']);
-    todid("✅", round(microtime(true) - $GLOBALS['start_time'], 3) . "s");
-}
-
 function todo($key, $icon = "📤", $callback = null) {
-    [, $indent, $status] = todo_state($key);
+    $icon = get_icon($key, $icon);
+    [, $indent, $status, $todo] = todo_state($key);
+    if ($key != $todo) return false;
 
     echo("$icon\t" . str_pad("$indent$key ", 59, "."));
+    logstr("TODO: $icon\t$key\n");
 
     $GLOBALS['current_todo'] = $key;
     $GLOBALS['start_time'] = microtime(true);
 
     switch ($status) {
         case 'x':
-            return todid("❎", "done");
+            return todid("🆗");
         case '-':
-            return todid("⏩️", "skip");
+            return todid("⏩️");
         default:
+            todo_state($GLOBALS['current_todo'], '.');
             if (file_exists($f = "/workspace/.devcontainer/todos/$key.inc.php")) {
-                todid("⤵️", "");
+                todid("🔽", "...");
                 require($f);
                 return;
             }
             if ($callback) {
                 $callback();
-                todo_check($GLOBALS['current_todo']);
             }
-            return ok();
+            todo_check($GLOBALS['current_todo']);
+            return todid("✅", round(microtime(true) - $GLOBALS['start_time'], 3) . "s");
     }
 }
 
-function todid($icon, $msg) {
+function todid($icon, $msg="") {
+    logstr("TODID: $GLOBALS[current_todo] $icon\t$msg\n");
+
     echo("$icon\t$msg\n");
     return false;
 }
@@ -87,6 +88,15 @@ function todo_state($key, $val = null) {
         }
     }
     return null;
+}
+
+function site_file($path, $lines = null) {
+    $path = "/workspace/site/$path";
+    if ($lines) {
+        file_put_contents($path, implode("\n", $lines));
+        return $lines;
+    }
+    return explode("\n", file_get_contents($path));
 }
 
 function config($key, $val = null) {
@@ -123,10 +133,11 @@ function active_site($site = "") {
         $target = readlink("/workspace/site");
         $GLOBALS['ACTIVE_SITE'] = basename($target);
     }
-    if ($GLOBALS['ACTIVE_SITE'] && $GLOBALS['site_directory'] != "/workspace/sites/$GLOBALS[ACTIVE_SITE]") {
+    if ($GLOBALS['ACTIVE_SITE']) {
         $GLOBALS['site_directory'] = "/workspace/sites/$GLOBALS[ACTIVE_SITE]";
-        link_directory($GLOBALS['site_directory'] . "/data", "/workspace/data");
-        link_directory($GLOBALS['site_directory'], "/workspace/site");
+        // TODO: Fix this. It puts symlinks inside the existing ones
+        //link_directory($GLOBALS['site_directory'] . "/data", "/workspace/data");
+        //link_directory($GLOBALS['site_directory'], "/workspace/site");
         return $GLOBALS['ACTIVE_SITE'];
     }
 }
@@ -148,11 +159,14 @@ function remove_directory($dir, $remove_existing = True) {
     }
 }
 
-function get_installed_packages($file) {
-    if (!file_exists($file)) {
-        $installed = `composer show --no-dev --direct -f json | jq -r '.installed[] | "\(.name):\(.version)"'`;
-        file_put_contents($file, $installed);
-    }
+function get_installed_packages($file, $with_versions=true) {
+    $line_template = $with_versions ? "\(.name):\(.version)" : "\(.name)";
+    $installed = `composer show --working-dir=/workspace/site/root/ --no-dev --direct -f json | jq -r '.installed[] | "$line_template"'`;
+    file_put_contents($file, $installed);
+}
+
+function composer($cmd) {
+    return shh("composer -n --working-dir=/workspace/site/root/ $cmd");
 }
 
 function sh($command = "echo 'sh() was called without a command'") {
@@ -180,4 +194,40 @@ function get_matches($pattern, $subject) {
 function get_match($pattern, $subject, $index = 0) {
     $matches = get_matches($pattern, $subject);
     return @$matches[$index];
+}
+
+function get_icon($msg, $icon) {
+    if ($icon) return $icon;
+
+    $d = [        
+        "directory" => "📁",
+        "initialize" => "🥚",
+        "github" => "🐙",
+        "files" => "🗂️",
+        "settings" => "📝",
+        "recreate" => "🔄",
+        "database" => "🗃️",
+        "clone" => "🐑",
+        "problem" => "🧯",
+        "install" => "💾",
+        "outdated" => "📜",
+        "code" => "📑",
+        "patch" => "🪡",
+        "unpin" => "📌",
+        "pin" => "📍",
+        "remove" => "🗑️",
+        "module" => "🧩",
+        "settings" => "📝",
+        "delete" => "🗑️",
+        "10" => "🔟",
+        "9" => "9️⃣",
+        "drupal" => "💧",
+        "upgrade" => "🆙",
+        "data" => "💽",
+        "todo" => "✅",
+    ];
+    foreach ($d as $k => $v) {
+        if (stripos($msg, $k) !== false) return $v;
+    }
+    return '🎲';
 }

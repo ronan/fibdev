@@ -24,7 +24,7 @@ if (!active_site()) {
   die;
 }
 
-say("Current Site: " . config("Name"), "📣");
+say("Current Site: " . config("Site Name"), "📣");
 say("Site Directory: $GLOBALS[site_directory]", "📁");
 
 todo('Create site directory', "📁", function() {
@@ -33,19 +33,19 @@ todo('Create site directory', "📁", function() {
   todo_check('Create README.md');
 });
 
-todo('Test TODO list', "✅", function() {});
+todo('Test TODO list', "", function() {});
 
-todo('Initialize environment', "🥚", function() {
+todo('Initialize environment', "", function() {
   todo_uncheck('Delete logs, and temporary files');
 });
 
-todo('Delete logs, and temporary files', "🗑️", function() {
+todo('Delete logs, and temporary files', "", function() {
   foreach (['outbox', 'data/logs', 'data/tmp'] as $dir) {
     create_directory("/workspace/site/$dir");
   }
 });
 
-todo("Create the code root", "📂", function() {
+todo("Create the code root", "", function() {
   if (is_dir("/workspace/site/inbox/code")) {
     link_directory("/workspace/site/inbox/code", "/workspace/site/root");
     todo_state('Specify the git repo url', '-');
@@ -66,22 +66,22 @@ EOM);
   }
 });
 
-todo('Clone the code from git', "🐙", function() {
+todo('Clone the code from git', "", function() {
   $repo = config('Git Repository') || err("No code repository specified.");
   system("git clone $repo /workspace/site/root");
 });
 
-todo("Add settings.local.php override file", "📝", function() {
+todo("Add settings.local.php override file", "", function() {
   copy("/workspace/.devcontainer/drupal/settings.local.php", "/workspace/site/root/web/sites/default/settings.local.php");
 });
 
 todo("Set up the database", "🗃️", function() {});
 
-todo("Delete and recreate the database", "🔄", function() {
+todo("Delete and recreate the database", "", function() {
   sh("mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS drupal; CREATE DATABASE drupal'");
 });
 
-todo("Import the production data", "💽", function() {
+todo("Import the production data", "", function() {
   $sql_files = glob("/workspace/site/inbox/*.sql*");
   $import_file = array_pop($sql_files);
   if (!$import_file) {
@@ -93,4 +93,4 @@ todo("Import the production data", "💽", function() {
   todo_check('Specify the git repo url');
 });
 
-todo("Upgrade to Drupal 10", "⬆️");
+todo("Upgrade to Drupal 10", "");
