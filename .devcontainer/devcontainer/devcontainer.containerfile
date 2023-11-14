@@ -29,12 +29,13 @@ RUN curl -sSL https://raw.githubusercontent.com/tests-always-included/mo/master/
 	&& chmod a+x /usr/bin/mo;
 
 # Helper commands
-RUN ln -s /workspace/.devcontainer/drupal9/drush9.sh 		/usr/local/bin/drush9;  	\
-	ln -s /workspace/.devcontainer/drupal10/drush10.sh 		/usr/local/bin/drush10; 	\
-	ln -s /workspace/.devcontainer/drupal9/composer9.sh 	/usr/local/bin/composer9; 	\
-	ln -s /workspace/.devcontainer/drupal10/composer10.sh 	/usr/local/bin/composer10;	\
+RUN ln -s /workspace/.devcontainer/drupal/drush.sh 			/usr/local/bin/drush;  		\
+	ln -s /workspace/.devcontainer/bin/initialize.php 		/usr/local/bin/initialize;	\
 	ln -s /workspace/.devcontainer/bin/reset.sh 		    /usr/local/bin/reset;		\
-	ln -s /workspace/.devcontainer/bin/upgrade.sh 			/usr/local/bin/upgrade;		\
-	ln -s /workspace/.devcontainer/bin/validate.sh 			/usr/local/bin/validate;
+	ln -s /workspace/.devcontainer/bin/ingest.php 			/usr/local/bin/ingest;		\
+	ln -s /workspace/.devcontainer/bin/upgrade.php 			/usr/local/bin/upgrade;		\
+	ln -s /workspace/.devcontainer/bin/validate.sh 			/usr/local/bin/validate;	\
+	ln -s /workspace/.devcontainer/bin/run.php 				/usr/local/bin/run;
 
-#RUN yarn global add rjson
+RUN tabs 4
+#RUN yarn global add rjsonx

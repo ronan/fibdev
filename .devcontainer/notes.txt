@@ -68,3 +68,125 @@ wget --spider -r -l 3 https://www.savetheboundarywaters.org 2>&1 \
 
 
 drush10 uli admin/structure/paragraphs_type/homepage_banner_item/display
+
+
+# TO install:
+rm -f ../dropdev/.DS_Store
+ln -s ../dropdev/* ./dropdev;
+mkdir inbox outbox
+
+
+1: 🧑‍💻 > Specify the production url and shortname
+2: 🖥️ > Create empty directories. Capture info/vrt reference from prod. (initialize.php)
+3: 🧑‍💻 > Drop the db and codebase
+4: 🖥️ > Import code, db, perform partial upgrade, create path_redirect_import, (ingest.php)
+5: 🖥️ > Run tests. If pass: goto 8 (validate.php)
+6: 🧑‍💻 > Fix custom themes and modules, find replacements.
+7: goto 4
+8: 🧑‍💻 > Commit and push
+
+👆 These are... 
+    - Todo
+    - Tasks - Clashes with VS Code 'task'
+    - Activities
+    - Jobs
+    - Steps
+    - Duty
+    - Chore
+
+Site Status:
+- none -
+
+Todo: Get the code from git
+    Todo: Specify the git repo location
+    Todo: Checkout the code
+Todo: Set up the database
+    Todo: Create the db
+    Todo: Get data from prod
+    Todo: import from dump
+Todo: Upgrade to latest
+    Todo: Update Contrib Code
+    Todo: Update Custom Code
+        Todo: Run rector
+        Todo: Update metadata
+    Todo: Update DB
+    Todo: Commit and push
+
+Git specified
+    or prompt for repo
+Code Exists
+    or checkout from git
+DB created
+    or create db
+DB dump Exists
+    or pull from
+        backup and migrate
+            prompt for prod admin credentials
+        pantheon (ddev)
+        platform (ddev)
+    or prompt to put it in the right spot
+DB imported
+    import from dump
+    or import db
+Code Upgraded
+DB updated
+
+
+
+CONTAINERS TO ADD:
+
+A FILE MANAGER
+    https://tinyfilemanager.github.io/demo/
+        small, php
+    https://github.com/spacedriveapp/spacedrive
+        rust, cross-cloud, looks like finder but even shinier
+sitespeed.io
+vs code itself! but... like... the front end... but hosted! Local clouddev
+A user interface to pull it altogether
+    Something custom built with web tech and accessed via browser
+        pro: exactly what I want
+        con: software to maintain
+    VS Code with custom plugin to ala platform.io
+        Pro: Not something from scratch
+        Con: Duct tape solution, not much control
+    Static site built with web tech and accessed via browser 
+        (and statically built during the task processes)
+Things in a UI
+    Home:
+        List of sites
+        Docker Controller (portainer)
+    Per Site:
+        Active Site (Working Site)
+        Reference Site
+        Side by Side reference vs sites (sync scroll)
+        VRT Results
+        Sitespeed Results
+        Git
+        Site admin
+        Logs
+        Edit Custom Code
+            VS Code
+            vim
+            Cloud 9
+        Terminal
+            zsh
+            php repl
+            drush repl
+        Debug
+        
+            
+
+
+
+
+
+Markdown Table:
+| A | B | C |
+| :- | :- | :- |
+|a|4|$|
+||365| ()|
+
+Use these to store data
+
+
+New invent

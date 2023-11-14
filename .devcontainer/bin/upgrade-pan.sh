@@ -18,6 +18,11 @@ cd /workspace/drupal10
 echo "🔄 Reset upgrade destination ..."
 git restore .
 
+
+# TODO: Get a list of installed packages and versions
+# Attepm
+
+
 echo "🧼 Prepping git ..."
 # https://docs.pantheon.io/guides/drupal-hosted-createcustom/new-branch
 git remote add ic https://github.com/pantheon-upstreams/drupal-composer-managed.git && git fetch ic
