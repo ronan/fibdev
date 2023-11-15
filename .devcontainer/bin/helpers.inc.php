@@ -12,6 +12,8 @@
 // }
 // set_error_handler("error_handler");
 
+define("REGEX_KEYVAL", "/( *)\- +\[(.)?\] (.+)/");
+
 function say($msg, $icon = "ℹ️") {
     echo("$icon  $msg\n");
 }
@@ -24,40 +26,47 @@ function err($err) {
     die;
 }
 
-function todo($key, $icon = "📤", $callback = null) {
-    $icon = get_icon($key, $icon);
-    [, $indent, $status, $todo] = todo_state($key);
-    if ($key != $todo) return false;
+function todo_regex($key = null) {
+    $key = $key ? preg_quote($key) : '.+';
+    return "/( *)\- +\[(.)?\] ($key)/";
+}
 
-    echo("$icon\t" . str_pad("$indent$key ", 59, "."));
-    logstr("TODO: $icon\t$key\n");
+function todo($key, $callback = null) {
+    $todo = todo_load($key);
+    if (!$todo) return;
 
-    $GLOBALS['current_todo'] = $key;
-    $GLOBALS['start_time'] = microtime(true);
-
-    switch ($status) {
+    echo(get_icon($todo['key']) . "\t" . str_pad("$todo[indent]$todo[key] ", 59, "."));
+    switch ($todo['status']) {
         case 'x':
             return todid("🆗");
         case '-':
             return todid("⏩️");
         default:
-            todo_state($GLOBALS['current_todo'], '.');
-            if (file_exists($f = "/workspace/.devcontainer/todos/$key.inc.php")) {
+            todo_state($todo['key'], '.');
+            $insert_after = $todo['regex'];
+            foreach ($todo['sub_todos'] as $sub) {
+                if (!todo_load($sub['key'])) {
+                    site_file_insert_after(
+                        $insert_after, 
+                        "$todo[indent]  $sub[indent]- [ ] $sub[key]"
+                    );
+                    $insert_after = $sub['regex'];
+                }
+            }
+            if (file_exists($f = "/workspace/.devcontainer/todos/$todo[key].inc.php")) {
                 todid("🔽", "...");
                 require($f);
-                return;
             }
+            $start_time = microtime(true);
             if ($callback) {
                 $callback();
             }
-            todo_check($GLOBALS['current_todo']);
-            return todid("✅", round(microtime(true) - $GLOBALS['start_time'], 3) . "s");
-    }
+            todo_state($todo['key'], 'x');
+            todid("✅", round(microtime(true) - $start_time, 3) . "s");
+        }
 }
 
 function todid($icon, $msg="") {
-    logstr("TODID: $GLOBALS[current_todo] $icon\t$msg\n");
-
     echo("$icon\t$msg\n");
     return false;
 }
@@ -72,31 +81,76 @@ function todo_check($key) {
 
 function todo_state($key, $val = null) {
     $file = "/workspace/site/README.md";
-    if (!file_exists($file)) return $key == 'Create TODO list' ? " " : null;
+    if (!file_exists($file)) return null;
 
-    $lines = file($file);
-    foreach($lines as $i => $line) {
-        if ($matches = get_matches("/( *)\- +\[(.)?\] (.+)/", $line)) {
-            [, $indent, $status, $todo] = $matches;
-            if ($key && $todo == $key) {
-                if (!is_null($val)) {
-                    $lines[$i] = "$indent- [$val] $todo\n";
-                    file_put_contents($file, implode("", $lines));
-                }
-                return $matches;
-            }
-        }
+    $todo = todo_load($key);
+    if($todo && $val) {
+        site_file_replace($todo['regex'], "$todo[indent]- [$val] $todo[key]");
     }
-    return null;
+    return isset($todo['status']) ? $todo['status'] : null;
 }
 
-function site_file($path, $lines = null) {
-    $path = "/workspace/site/$path";
-    if ($lines) {
-        file_put_contents($path, implode("\n", $lines));
-        return $lines;
+function todo_load($key = null, $file = 'README.md') {
+    $lines = site_file($file);
+    $out = [];
+    foreach ($lines as $i => $line) {
+        if ($matches = get_matches(todo_regex($key), $line)) {
+            $todo = array_combine(
+                ['todo', 'indent', 'status', 'key'],
+                $matches
+            );          
+            $todo['line'] = $i;
+            $todo['regex'] = todo_regex($todo['key']);
+            $todo['sub_todos'] = todo_load_all("/workspace/.devcontainer/todos/$todo[key].md");
+            if ($key) return $todo;
+            $out[$i] = $todo;
+        }
+    }
+    return $out;
+}
+
+function todo_load_all($file = 'README.md') {
+    return todo_load(null, $file);
+}
+
+function site_file($path = "README.md", $replace = null) {
+    if (!$path = site_file_path($path)) {
+        return [];
+    }
+    if ($replace) {
+        file_put_contents($path, implode("\n", $replace));
     }
     return explode("\n", file_get_contents($path));
+}
+
+function site_file_path($path) {
+    if (substr($path, 0, 1) == '/' && file_exists($path)) return $path;
+
+    foreach (
+        [
+            '/workspace/site',
+            '/workspace/.devcontainer/site'
+        ] as $base
+    ) {
+        if (file_exists("$base/$path")) {
+            return "$base/$path";
+        }
+    }
+    return false;
+}
+
+function site_file_replace($pattern, $new_lines, $file = "README.md") {
+    site_file_insert_after($pattern, $new_lines, 1, $file);
+}
+
+function site_file_insert_after($pattern, $new_lines, $length = 0, $file = "README.md") {
+    $new_lines = is_array($new_lines) ? $new_lines : array($new_lines);
+    $lines = site_file($file);
+    foreach (get_matches_array($pattern, $lines) as $i => $m) {
+        array_splice($lines, $i + 1 - $length, $length, $new_lines);
+        site_file($file, $lines);
+        return;
+    }
 }
 
 function config($key, $val = null) {
@@ -185,20 +239,25 @@ function logstr($msg) {
     return $msg;
 }
 
-function get_matches($pattern, $subject) {
+function get_matches($pattern, $line) {
     $matches = array();
-    preg_match($pattern, $subject, $matches);
+    preg_match($pattern, $line, $matches);
     return $matches;
 }
 
-function get_match($pattern, $subject, $index = 0) {
-    $matches = get_matches($pattern, $subject);
-    return @$matches[$index];
+function get_matches_array($pattern, $lines) {
+    $out = array();
+    foreach ($lines as $i => $line) {
+        if ($matches = get_matches($pattern, $line)) {
+            $out[$i] = $matches;
+        }
+    }
+    return $out;
 }
 
-function get_icon($msg, $icon) {
-    if ($icon) return $icon;
 
+function get_icon($msg) {
+    if (!$msg) return "";
     $d = [        
         "directory" => "📁",
         "initialize" => "🥚",

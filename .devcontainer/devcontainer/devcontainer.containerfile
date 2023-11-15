@@ -37,5 +37,4 @@ RUN ln -s /workspace/.devcontainer/drupal/drush.sh 			/usr/local/bin/drush;  		\
 	ln -s /workspace/.devcontainer/bin/validate.sh 			/usr/local/bin/validate;	\
 	ln -s /workspace/.devcontainer/bin/run.php 				/usr/local/bin/run;
 
-RUN tabs 4
 #RUN yarn global add rjsonx

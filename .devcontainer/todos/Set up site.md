@@ -1,10 +1,9 @@
-# Set up Site
+# Set up site
 
 - [ ] Create site directory
-- [ ] Create TODO list
   - [ ] Test TODO list
 - [ ] Initialize environment
-- [ ] Delete logs, and temporary files
+  - [ ] Delete logs, and temporary files
 - [ ] Create the code root
   - [ ] Specify the git repo url
   - [ ] Clone the code from git
