@@ -24,9 +24,10 @@ if (!active_site()) {
   die;
 }
 
-say("Current Site: " . config("Site Name"), "📣");
+say("Current Site: " . site_config("Site Name"), "📣");
 say("Site Directory: $GLOBALS[site_directory]", "📁");
 
+log_clear();
 
-todo("Set up site");
-todo("Upgrade to Drupal 10");
+todo("Test Todos");
+#todo("Upgrade to Drupal 10");
