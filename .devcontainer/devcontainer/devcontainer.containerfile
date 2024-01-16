@@ -38,3 +38,6 @@ RUN ln -s /workspace/.devcontainer/drupal/drush.sh 			/usr/local/bin/drush;  		\
 	ln -s /workspace/.devcontainer/bin/run.php 				/usr/local/bin/run;
 
 #RUN yarn global add rjsonx
+
+# Disable git's folder ownership setting
+RUN git config --global --add safe.directory "*"

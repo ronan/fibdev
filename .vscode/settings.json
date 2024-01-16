@@ -15,7 +15,8 @@
     ],
     "files.associations": {
         "*.moustache": "mustache",
-        "*.inc": "php"
+        "*.inc": "php",
+        "*.module": "php"
     },
     "workbench.startupEditor": "none",
     "[php]": {},

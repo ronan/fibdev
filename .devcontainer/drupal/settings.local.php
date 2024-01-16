@@ -1,8 +1,7 @@
 <?php
-assert_options(ASSERT_ACTIVE, TRUE);
-assert_options(ASSERT_EXCEPTION, TRUE);
 
 $databases['default']['default'] = array (
+  'driver' => 'mysql',
   'database' => 'drupal',
   'username' => 'root',
   'password' => 'root',

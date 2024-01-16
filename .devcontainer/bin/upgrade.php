@@ -75,7 +75,7 @@ shh(
         "composer remove --no-update --no-audit " . 
         strtr(file_get_contents("$site_dir/outbox/installed-before.txt"), "\n", " ")
     );
-shh('composer require --ignore-platform-reqs drupal/core:^10.1 drupal/core-recommended:^10.1 ');
+shh('composer require --ignore-platform-reqs drupal/core:^10 drupal/core-recommended:^10 ');
 shh('composer require --no-update --no-audit --ignore-platform-reqs ' . implode(" ", $packages));
 ok();
 

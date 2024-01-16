@@ -1,0 +1,4 @@
+name: mockmodule Stub
+type: module
+description: A fake version of this module for upgrade purposes
+core_version_requirement: ^8 || ^9 || ~10

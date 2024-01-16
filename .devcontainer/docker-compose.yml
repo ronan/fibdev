@@ -47,15 +47,16 @@ services:
     env_file:
       - .env
 
-  # backstop:
-  #   image: backstopjs/backstopjs
-  #   command: remote
-  #   env_file:
-  #     - .env
-  #   links:
-  #     - gateway:drupal
-  #   ports:
-  #       - 3000:3000
-  #   volumes:
-  #     - ../:/workspace
-  #     - ../data/backstop:/src
+  backstop:
+    image: backstopjs/backstopjs
+    container_name: backstop
+    command: remote
+    env_file:
+      - .env
+    links:
+      - gateway:drupal
+    ports:
+        - 3000:3000
+    volumes:
+      - ../:/workspace
+      - ../site/data/backstop:/src
