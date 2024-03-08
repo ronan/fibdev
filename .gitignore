@@ -3,3 +3,4 @@
 /root
 /outbox/*
 /inbox/*
+/.env
