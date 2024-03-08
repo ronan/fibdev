@@ -54,15 +54,15 @@ services:
       - ./.env
       - ../.env
 
-  backstop:
-    image: backstopjs/backstopjs
-    command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
-    links:
-      - gateway:drupal
-    ports:
-      - 3000:3000
-    volumes:
-      - ../:/workspace
-    env_file:
-      - ./.env
-      - ../.env
+  # backstop:
+  #   image: backstopjs/backstopjs
+  #   command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
+  #   links:
+  #     - gateway:drupal
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ../:/workspace
+  #   env_file:
+  #     - ./.env
+  #     - ../.env
