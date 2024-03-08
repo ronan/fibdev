@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -e
+
+
+if [ -f /workspace/.env ] && [ "$1" != "--force" ]; then
+  echo "This environment is configured with the following values:
+
+  PROJECT=$PROJECT
+  PROD_URL=$PROD_URL
+  PREPROD_URL=$PROD_URL
+
+To discard these values and re-initialize, please run \`init --force\`
+or run the 'Force Reset Environment' task.
+  ";
+  exit
+fi
+
+header "  ⬆️  Initializing dev environment ... "
+
+mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
+mkdir -p /workspace/data/logs /workspace/data/tmp /workspace/outbox /workspace/inbox
+echo "/" > /workspace/inbox/urls.txt
+
+echo "# Project-specific settings.
+
+PROJECT=untitled
+
+GIT_URL=
+
+PROD_URL=
+PREPROD_URL=
+" > /workspace/.env
+
+code /workspace/.env

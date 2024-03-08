@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker-compose -p "${PROJECT}_devcontainer" \
+docker-compose -p "${DOCKER_COMPOSE_PROJECT}" \
    exec -it $@

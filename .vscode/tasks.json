@@ -12,6 +12,16 @@
                 "reveal": "always",
                 "panel": "new"
             }
+        },
+        {
+            "label": "Force Reset Environment",
+            "type": "shell",
+            "command": "/workspace/.devcontainer/bin/init --force",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
         }
     ]
 }

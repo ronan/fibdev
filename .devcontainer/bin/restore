@@ -10,16 +10,15 @@ mkdir -p data
 rm   -rf "data/*/*"
 mkdir -p data/logs data/tmp outbox
 
-# echo "📥 Resetting codebase ... "
-# if [ ! -d /workspace/root ]; then
-#   # if [ -n "$GIT_URL" ]; then
-#   #   git checkout $GIT_URL /workpace/root
-#   # fi
-#   # else
-#   #   echo "😵 Please place the site in /workspace/root or specify a GIT_URL in ./.env"
-#   #   exit
-#   # fi
-# fi
+echo "📥 Cloning codebase ... "
+if [ ! -d /workspace/root ]; then
+  if [ -n "$GIT_URL" ]; then
+    git clone $GIT_URL /workspace/root
+  else
+    echo "😵 Please place the site in /workspace/root or specify a GIT_URL in ./.env"
+    exit
+  fi
+fi
 
 echo "📁 Resetting site files ..."
 if [ -d /workspace/inbox/files ]; then
@@ -51,6 +50,6 @@ echo "
 🎉 🎉 🎉 Restore Complete! 🎉 🎉 🎉
 
 "
-app-cli uli
+uli
 
 echo

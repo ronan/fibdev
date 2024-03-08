@@ -1,7 +1,5 @@
 version: '3.3'
 
-name: cmqcc
-
 services:
   devcontainer:
     build:
@@ -15,6 +13,7 @@ services:
       - gateway:drupal
       - db
     env_file:
+      - ./.env
       - ../.env
 
   gateway:
@@ -36,13 +35,15 @@ services:
     volumes:
       - ../:/workspace
     env_file:
+      - ./.env
       - ../.env
 
   db:
     image: mariadb:11
-    # ports:
-    #   - 3306:3306
+    volumes:
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
     env_file:
+      - ./.env
       - ../.env
 
   phpmyadmin:
@@ -50,11 +51,12 @@ services:
     ports:
       - 8080:80
     env_file:
+      - ./.env
       - ../.env
 
   backstop:
     image: backstopjs/backstopjs
-    command: --config="/workspace/backstop.js/backstop.config.js" remote
+    command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
     links:
       - gateway:drupal
     ports:
@@ -62,4 +64,5 @@ services:
     volumes:
       - ../:/workspace
     env_file:
+      - ./.env
       - ../.env
