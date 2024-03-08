@@ -7,8 +7,8 @@ services:
       dockerfile: devcontainer/devcontainer.containerfile
     volumes:
       - ../:/workspace
-      - /Users/ronan/.ssh:/root/.ssh:ro
-      - /Users/ronan/.terminus:/root/.terminus
+      # - /Users/ronan/.ssh:/root/.ssh:ro
+      # - /Users/ronan/.terminus:/root/.terminus
     links:
       - gateway:drupal
       - db
