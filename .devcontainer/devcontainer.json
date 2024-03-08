@@ -1,4 +1,4 @@
-// See: https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code
+ // See: https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code
 {
 	"name": "DropDev",
 	"dockerComposeFile": "docker-compose.yml",
@@ -6,6 +6,12 @@
 	"workspaceFolder": "/workspace",
 	// "postCreateCommand": ["reset"],
 	"remoteUser": "root",
+	"secrets": {
+		"PANTHEON_MACHINE_TOKEN": {
+			"description": "A valid Pantheon machine token.",
+			"documentationUrl": "https://dashboard.pantheon.io/personal-settings/machine-tokens/create"
+		}
+	},
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": true,
@@ -38,27 +44,45 @@
 					"**/.DS_Store": true,
 					"**/Thumbs.db": true
 				},
-				"files.associations": {
-					"*.inc": "php"
-				},
 				"cSpell.enabled": true,
-				"editorconfig.generateAuto": false,
 				"cSpell.words": [
-					"devcontainer",
-					"dropdev"
-				]
-			},
-			"extensions": [
-				"xdebug.php-debug",
-				"bmewburn.vscode-intelephense-client",
-				"streetsidesoftware.code-spell-checker",
-				"EditorConfig.EditorConfig",
-				"ms-azuretools.vscode-docker",
-				"mrmlnc.vscode-apache",
-				"DavidAnson.vscode-markdownlint",
-				"emilast.LogFileHighlighter",
-				"yzhang.markdown-all-in-one"
-			]
+						"devcontainer",
+						"baskstop",
+						"devcontainer",
+						"dropdev",
+						"preprocess",
+						"proot",
+						"reqs",
+						"savethebw",
+						"todid",
+						"viewports",
+						"yamls",
+						"zcat"
+					],
+					"files.associations": {
+						"*.inc": "php",
+						"*.module": "php"
+					},
+					"[php]": {},
+					"workbench.startupEditor": "none",
+					"task.allowAutomaticTasks": "on",
+					"debug.internalConsoleOptions": "neverOpen",
+					"debug.showBreakpointsInOverviewRuler": false,
+					"debug.terminal.clearBeforeReusing": false,
+					"editor.tabSize": 2
+    },
+    "extensions": [
+     "philfontaine.autolaunch",
+						"xdebug.php-debug",
+						"bmewburn.vscode-intelephense-client",
+						"streetsidesoftware.code-spell-checker",
+						"EditorConfig.EditorConfig",
+						"ms-azuretools.vscode-docker",
+						"mrmlnc.vscode-apache",
+						"DavidAnson.vscode-markdownlint",
+						"emilast.LogFileHighlighter",
+						"yzhang.markdown-all-in-one"
+    ]
+			}
 		}
 	}
-}

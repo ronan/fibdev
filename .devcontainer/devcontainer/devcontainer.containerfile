@@ -2,41 +2,54 @@
 FROM mcr.microsoft.com/devcontainers/php:0-8.1-bullseye
 
 # Install PHP extensions needed to develop the app
-RUN apt-get update && apt-get install -y \
-		libzip-dev \
-		libonig-dev \
-		libpng-dev \
-		libjpeg-dev \
-		libwebp-dev \
-		mariadb-client \
-		libfreetype6-dev \
-	&& docker-php-ext-configure \ 
-		gd --with-jpeg=/usr --with-freetype --with-webp \
-	&& docker-php-ext-install \
-		gd \
-		opcache \
-		mbstring \
-		pdo \
-		pdo_mysql \
-		zip
+RUN apt-get update && \
+		apt-get install -y \
+			libzip-dev \
+			libonig-dev \
+			libpng-dev \
+			libjpeg-dev \
+			libwebp-dev \
+			mariadb-client \
+			libfreetype6-dev && \
+	  docker-php-ext-configure \ 
+  		gd \
+			--with-jpeg=/usr \
+			--with-freetype \
+			--with-webp &&\
+		docker-php-ext-install \
+			gd \
+			opcache \
+			mbstring \
+			pdo \
+			pdo_mysql \
+			zip
+
+# Terminus
+RUN mkdir -p ~/terminus && cd ~/terminus && \
+	curl -L https://github.com/pantheon-systems/terminus/releases/download/3.3.0/terminus.phar --output terminus && \
+	chmod +x terminus && \
+	./terminus self:update && \
+	ln -s ~/terminus/terminus /usr/local/bin/terminus
+
+# Bee (drush for backrop)
+RUN cd ~ && \
+		git clone https://github.com/backdrop-contrib/bee.git && \
+ 	 	chmod +x bee/bee.php
 
 # Custom php ini
 RUN ln -s /workspace/.devcontainer/devcontainer/devcontainer.php.ini \
-		  /usr/local/etc/php/conf.d/devcontainer.php.ini
-
-# Install mustache processor
-RUN curl -sSL https://raw.githubusercontent.com/tests-always-included/mo/master/mo -o /usr/bin/mo \
-	&& chmod a+x /usr/bin/mo;
+          /usr/local/etc/php/conf.d/devcontainer.php.ini
 
 # Helper commands
-RUN ln -s /workspace/.devcontainer/drupal/drush.sh 			/usr/local/bin/drush;  		\
-	ln -s /workspace/.devcontainer/bin/initialize.php 		/usr/local/bin/initialize;	\
-	ln -s /workspace/.devcontainer/bin/reset.sh 		    /usr/local/bin/reset;		\
-	ln -s /workspace/.devcontainer/bin/ingest.php 			/usr/local/bin/ingest;		\
-	ln -s /workspace/.devcontainer/bin/upgrade.php 			/usr/local/bin/upgrade;		\
-	ln -s /workspace/.devcontainer/bin/validate.sh 			/usr/local/bin/validate;	\
-	ln -s /workspace/.devcontainer/bin/run.php 				/usr/local/bin/run;
+RUN ln -s /workspace/.devcontainer/bin/drush        	 /usr/local/bin/drush;        \
+    ln -s /workspace/.devcontainer/bin/initialize.php  /usr/local/bin/initialize;   \
+    ln -s /workspace/.devcontainer/bin/reset.sh        /usr/local/bin/reset;        \
+    ln -s /workspace/.devcontainer/bin/ingest.php      /usr/local/bin/ingest;       \
+    ln -s /workspace/.devcontainer/bin/upgrade.php     /usr/local/bin/upgrade;      \
+    ln -s /workspace/.devcontainer/bin/validate.sh     /usr/local/bin/validate;     \
+    ln -s /workspace/.devcontainer/bin/run.php         /usr/local/bin/run;
 
+ENV PATH="${PATH}:/workspace/.devcontainer/bin"
 #RUN yarn global add rjsonx
 
 # Disable git's folder ownership setting

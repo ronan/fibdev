@@ -1,5 +1,5 @@
 .DS_Store
-/data
-/approot
-/sites/*
-/site
+/data/*/*
+/root
+/outbox/*
+/inbox/*

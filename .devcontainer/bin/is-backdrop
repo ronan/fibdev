@@ -1,0 +1,3 @@
+#!/bin/sh
+
+grep -q "Backdrop" "/workspace/root/README.md" 2> /dev/null;

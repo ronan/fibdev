@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = "app-cli" ]; then
+  exec "$0"
+  return $?
+fi
+
+exec "$@"

@@ -1,0 +1,56 @@
+#!/bin/bash
+set -e
+
+header "    ⬆️  Restoring application ...      "
+
+cd /workspace
+
+echo "🗑️  Deleting logs, databases and temporary files ..."
+mkdir -p data
+rm   -rf "data/*/*"
+mkdir -p data/logs data/tmp outbox
+
+# echo "📥 Resetting codebase ... "
+# if [ ! -d /workspace/root ]; then
+#   # if [ -n "$GIT_URL" ]; then
+#   #   git checkout $GIT_URL /workpace/root
+#   # fi
+#   # else
+#   #   echo "😵 Please place the site in /workspace/root or specify a GIT_URL in ./.env"
+#   #   exit
+#   # fi
+# fi
+
+echo "📁 Resetting site files ..."
+if [ -d /workspace/inbox/files ]; then
+    rm -rf /workspace/root/files
+    ln -s /workspace/inbox/files /workspace/root/files
+fi
+
+echo "📝 Adding local config overrides ..."
+if is-backdrop; then
+  echo "   ... Adding local Backdrop settings ..."
+  cp -f /workspace/.devcontainer/app/backdrop.settings.local.php /workspace/root/settings.local.php
+elif is-drupal; then
+  echo "   ... Adding local Drupal settings ..."
+  cp -f /workspace/.devcontainer/app/backdrop.settings.local.php /workspace/root/web/settings.local.php
+fi
+
+echo "🔨 Deleting and recreating DB ..."
+mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
+
+echo "📦 Importing SQL dump ..."
+if [ -e /workspace/inbox/*.sql* ]; then
+  zcat /workspace/inbox/*.sql* | mariadb -h db -u root -proot app
+else
+  echo "Please place a sql or sql.gz file in /workspace/inbox"
+fi
+
+echo "
+
+🎉 🎉 🎉 Restore Complete! 🎉 🎉 🎉
+
+"
+app-cli uli
+
+echo

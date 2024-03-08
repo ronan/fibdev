@@ -1,7 +1,0 @@
-<?php
-/**
- * Disable this module
- */
-function mockmodule_update_99999999() {
-  \Drupal::service('module_installer')->uninstall(['mockmodule']);
-}

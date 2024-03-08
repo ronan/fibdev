@@ -1,0 +1,7 @@
+#!/bin/sh
+
+COMPOSER_DISCARD_CHANGES=true yes | \
+    /workspace/site/root/vendor/bin/composer \
+        --working-dir=/workspace/site/root/ \
+        --no-interaction \
+        "$@"

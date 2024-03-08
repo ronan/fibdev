@@ -1,0 +1,6 @@
+#!/bin/sh
+
+yes | /root/bee/bee.php \
+        --root=/workspace/root/  \
+        --base-url=http://localhost:8010 \
+        "$@"

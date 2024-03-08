@@ -1,5 +1,18 @@
 #!/bin/bash
 
+
+echo "
+  ═╦════╗                         🌤️
+   ║  [ | ]
+___╩___      [  ][  ][  ]
+\   🛟  |     [  ][  ][  ]  ________
+ \     |_[  ][  ][  ][  ]_/ o o o /
+  \______________________________/
+🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊
+🌊🌊🌊🌊 Validating site with VRT. 🌊🌊🌊🌊🌊
+🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊🌊
+"
+
 if [ ! -f /workspace/inbox/urls.txt ]
 then 
     echo "🕷️ Crawling site to gather urls to test"
@@ -7,16 +20,18 @@ then
     cd /data/wget
     wget --spider \
          --recursive \
+         --level=$DEPTH_TO_TEST \
          --level=5 \
          --max-redirect=0 \
          --delete-after \
-         --domains=drupal9 \
-        http://drupal9/ 2>&1 \
+         --domains=drupal \
+         -e robots=off \
+        http://drupal/ 2>&1 \
         | grep -B 3 "text/html" \
         | grep http \
         | awk '{ print $3 }' \
         | uniq \
-        | sed "s|http://drupal9||g" \
+        | sed "s|http://drupal||g" \
         > /workspace/outbox/urls.txt
 
     cp /workspace/outbox/urls.txt /workspace/inbox/urls.txt
@@ -25,12 +40,10 @@ fi
 echo "🐒 Creating a backstop.json file"
 . /usr/bin/mo
 export TEST_URLS=(`head -n 50 /workspace/inbox/urls.txt | tr "\n" " "`)
-cat /workspace/.devcontainer/backstop.js/backstop.json.mustache \
-    | mo \
-    | jq \
-    > /workspace/data/backstop/backstop.json
+cp -f /workspace/.devcontainer/backstop.js/backstop.config.js /workspace/data/backstop/backstop.config.js
 
 echo "🧹Clearing cache"
+app-cli cc all
 # drush9 cache:rebuild
 # drush10 cache:rebuild
 

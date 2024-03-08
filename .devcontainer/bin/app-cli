@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if is-drupal; then
+    docker-exec app drush --yes --root=/workspace/root/ --uri=http://localhost:8010 "$@"
+elif is-backdrop; then
+    docker-exec app /root/bee/bee.php --yes --root=/workspace/root/ --uri=http://localhost:8010  "$@"
+else
+ err "Could not find an installed version of Drupal or Backdrop at /workspace/root"
+fi

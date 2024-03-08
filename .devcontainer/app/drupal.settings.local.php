@@ -2,7 +2,7 @@
 
 $databases['default']['default'] = array (
   'driver' => 'mysql',
-  'database' => 'drupal',
+  'database' => 'app',
   'username' => 'root',
   'password' => 'root',
   'prefix' => '',

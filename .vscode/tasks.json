@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Reset Environment",
+            "label": "Restore Dev Environment",
             "type": "shell",
-            "command": "/workspace/.devcontainer/bin/reset.sh",
+            "command": "/workspace/.devcontainer/bin/restore",
             "problemMatcher": [],
             "presentation": {
                 "reveal": "always",

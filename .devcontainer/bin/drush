@@ -1,0 +1,6 @@
+#!/bin/sh
+
+yes | /workspace/root/vendor/bin/drush \
+        --root=/workspace/root/  \
+        --uri=http://localhost:8010 \
+        "$@"

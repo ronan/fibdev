@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if is-drupal; then
+ app-cli cr
+elif is-backdrop; then
+ app-cli cc all
+fi
