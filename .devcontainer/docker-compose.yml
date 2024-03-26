@@ -32,6 +32,8 @@ services:
       dockerfile: app/app.containerfile
     links:
       - db
+    expose:
+      - 9000
     volumes:
       - ../:/workspace
     env_file:

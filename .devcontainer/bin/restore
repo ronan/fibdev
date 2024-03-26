@@ -13,11 +13,16 @@ mkdir -p data/logs data/tmp outbox
 echo "📥 Cloning codebase ... "
 if [ ! -d /workspace/root ]; then
   if [ -n "$GIT_URL" ]; then
-    git clone $GIT_URL /workspace/root
+    git clone $GIT_URL -b "${GIT_BRANCH:-main}" /workspace/rootg
   else
     echo "😵 Please place the site in /workspace/root or specify a GIT_URL in ./.env"
     exit
   fi
+fi
+
+echo "🎶 Running composer install"
+if [ -d /workspace/root ]; then
+  cd /workspace/root && composer install
 fi
 
 echo "📁 Resetting site files ..."
@@ -26,24 +31,37 @@ if [ -d /workspace/inbox/files ]; then
     ln -s /workspace/inbox/files /workspace/root/files
 fi
 
-echo "📝 Adding local config overrides ..."
+
+src="/workspace/.devcontainer/drupal/settings.local.php"
+dst="/workspace/root/web/sites/default/settings.local.php"
 if is-backdrop; then
-  echo "   ... Adding local Backdrop settings ..."
-  cp -f /workspace/.devcontainer/app/backdrop.settings.local.php /workspace/root/settings.local.php
-elif is-drupal; then
-  echo "   ... Adding local Drupal settings ..."
-  cp -f /workspace/.devcontainer/app/backdrop.settings.local.php /workspace/root/web/settings.local.php
+  src="/workspace/.devcontainer/app/backdrop.settings.local.php"
+  dst="/workspace/root/settings.local.php"
 fi
+if [ ! -f "$dst" ]; then
+  echo "📝 Adding local config overrides ..."
+
+  if [ ! -f /workspace/inbox/settings.local.php ]; then
+    cp $src /workspace/inbox/settings.local.php
+  fi
+  ln -s /workspace/inbox/settings.local.php $dst
+fi
+ln -fs /workspace/.devcontainer/app/info.php /workspace/root/web/info.php
+
 
 echo "🔨 Deleting and recreating DB ..."
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
 
 echo "📦 Importing SQL dump ..."
-if [ -e /workspace/inbox/*.sql* ]; then
+if [ -e /workspace/inbox/*.sql.gz ]; then
   zcat /workspace/inbox/*.sql* | mariadb -h db -u root -proot app
+elif [ -e /workspace/inbox/*.sql ]; then
+  cat /workspace/inbox/*.sql | mariadb -h db -u root -proot app
 else
   echo "Please place a sql or sql.gz file in /workspace/inbox"
 fi
+
+app deploy
 
 echo "
 

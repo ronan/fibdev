@@ -31,13 +31,16 @@ module.exports = {
   "debugWindow": false
 }
 
-require('fs').readFileSync('/workspace/inbox/urls.txt', 'utf-8').split(/\n/).forEach((url) => {
-  module.exports.scenarios.push(
-    {
-      "label": url,
-      "url": "http://drupal/" + url,
-      "referenceUrl": process.env.PROD_URL + "/" + url,
-      "removeSelectors": [".visually-hidden"]
-    }
-  );
-});
+try {
+  require('fs').readFileSync('/workspace/inbox/urls.txt', 'utf-8').split(/\n/).forEach((url) => {
+    module.exports.scenarios.push(
+      {
+        "label": url,
+        "url": "http://drupal/" + url,
+        "referenceUrl": process.env.PROD_URL + "/" + url,
+        "removeSelectors": [".visually-hidden"]
+      }
+    );
+  });
+} catch (err) {
+}

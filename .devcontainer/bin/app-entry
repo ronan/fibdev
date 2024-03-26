@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" = "app-cli" ]; then
+if [ "$1" = "app" ]; then
   exec "$0"
   return $?
 fi

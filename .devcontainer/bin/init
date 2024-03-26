@@ -2,17 +2,44 @@
 
 set -e
 
+header "         Welcome to DropDev        "
+echo "
+*** $PROJECT ***"
+
+vars="\
+PROJECT
+PHP_VERSION
+COMPOSE_PROJECT_NAME
+TERMINUS_SITE
+TERMINUS_ENV
+DEV_URL
+PREPROD_URL
+PROD_URL
+GIT_URL
+GIT_BRANCH"
+
 
 if [ -f /workspace/.env ] && [ "$1" != "--force" ]; then
-  echo "This environment is configured with the following values:
 
-  PROJECT=$PROJECT
-  PROD_URL=$PROD_URL
-  PREPROD_URL=$PROD_URL
+  export $(grep -v '^#' .env | xargs)
 
-To discard these values and re-initialize, please run \`init --force\`
-or run the 'Force Reset Environment' task.
-  ";
+  printf ' 
+
+  > This environment is configured with the following values:
+
+  +---------------------------------------------------------------------------------------+'
+    for i in $vars; do printf '
+  | %+20.20s | %-62.62s…|' "$i" "$(eval c=\${$i} && echo $c)"; done; printf ' 
+  +---------------------------------------------------------------------------------------+
+
+  To discard these values and re-initialize, please run \`init --force\`
+  or run the Force Reset Environment task.
+
+';
+
+  if [ ! -d /workspace/root ]; then
+    cd /workspace && git clone $GIT_URL -b "${GIT_BRANCH:-main}" root
+  fi
   exit
 fi
 
@@ -24,12 +51,20 @@ echo "/" > /workspace/inbox/urls.txt
 
 echo "# Project-specific settings.
 
-PROJECT=untitled
+# To reload these values into the environment rebuild the devcontainer.
 
-GIT_URL=
+for i in $vars; do printf '
+ | %+20.20s | %-62.62s…|' "$i" "$(eval c=\${$i} && echo $c)"; done; printf ' 
 
-PROD_URL=
-PREPROD_URL=
+
+PROJECT=${PROJECT:-"Untitled Project"}
+PHP_VERSION=${PHP_VERSION:-"8.2"}
+
+GIT_URL=$GIT_URL
+
+PREPROD_URL=$PREPROD_URL
+PROD_URL=$PROD_URL
+
 " > /workspace/.env
 
 code /workspace/.env

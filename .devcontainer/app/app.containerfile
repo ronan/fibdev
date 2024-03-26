@@ -1,8 +1,8 @@
-FROM php:7.4-fpm
+FROM php:${PHP_VERSION:-"8.1"}-fpm
 
 # Install xdebug
-# RUN yes | pecl install xdebug \
-#     && rm -rf /tmp/pear
+RUN yes | pecl install xdebug \
+    && rm -rf /tmp/pear
 
 # Install PHP extensions needed to run the app
 RUN apt-get update && \
@@ -30,7 +30,7 @@ RUN apt-get update && \
       zip
 
 # Custom php ini settings
-RUN ln -s /workspace/.devcontainer/drupal/drupal.php.ini /usr/local/etc/php/conf.d/drupal.php.ini
+RUN ln -s /workspace/.devcontainer/app/app.php.ini /usr/local/etc/php/conf.d/app.php.ini
 
 # Sendmail capture
 RUN curl https://raw.githubusercontent.com/Sanchiz/fake_sendmail.sh/master/fake_sendmail.sh -o /usr/bin/sendmail && \
