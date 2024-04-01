@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# PROD_URL=http://drupal
+# DEPTH_TO_TEST=3
+
+WGET_OUT=/workspace/outbox/wget
+
+echo "🕸️ Cloning $PROD_URL to depth $DEPTH_TO_TEST to $WGET_OUT"
+
+  rm -rf $WGET_OUT
+mkdir -p $WGET_OUT
+      cd $WGET_OUT
+
+wget  --recursive \
+      --max-redirect=1 \
+      --no-host-directories \
+      --user-agent=ronan/crawlbot \
+      --page-requisites \
+      --adjust-extension \
+      --rejected-log=/workspace/data/logs/wget-rejected \
+      --output-file=/workspace/data/logs/wget \
+      --domains=$(echo $PROD_URL | awk -F[/:] '{print $4}') \
+      --level=$DEPTH_TO_TEST \
+      -e robots=off \
+      $PROD_URL
+
+rm -rf /workspace/outbox/wget/sites/default/files
+mkdir -p /workspace/outbox/wget/sites/default
+ln -sf /workspace/root/web/sites/default/files /workspace/outbox/wget/sites/default/files
+
+cat /workspace/data/logs/wget \
+  | grep -B 3 "text/html" \
+  | grep http \
+  | awk '{ print $3 }' \
+  | uniq \
+  | sed "s|http://drupal||g" \
+  | urldecode \
+  > /workspace/outbox/urls.txt
+

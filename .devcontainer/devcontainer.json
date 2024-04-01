@@ -1,6 +1,6 @@
- // See: https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code
+// See: https://www.drupal.org/docs/develop/development-tools/editors-and-ides/configuring-visual-studio-code
 {
-	"name": "DropDev",
+	"name": "${localWorkspaceFolderBasename} - DropDev",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
 	"workspaceFolder": "/workspace",
@@ -13,27 +13,11 @@
 		}
 	},
 	"features": {
-		"ghcr.io/devcontainers/features/git:1": {
-			"ppa": true,
-			"version": "os-provided"
-		},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"moby": true,
-			"installDockerBuildx": true,
-			"version": "latest",
-			"dockerDashComposeVersion": "v2"
-		},
-		"ghcr.io/devcontainers/features/node:1": {
-			"version": "16",
-			"nvmVersion": "latest"
-		},
-		"ghcr.io/devcontainers-contrib/features/gulp-cli:2": {
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers/features/python:1": {
-			"installTools": true,
-			"version": "os-provided"
-		}
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers-contrib/features/gulp-cli:2": {},
+		"ghcr.io/devcontainers/features/python:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -61,28 +45,35 @@
 					],
 					"files.associations": {
 						"*.inc": "php",
-						"*.module": "php"
+						"*.module": "php",
+						"*.theme": "php",
+						"*.install": "php"
 					},
 					"[php]": {},
 					"workbench.startupEditor": "none",
 					"task.allowAutomaticTasks": "on",
+					"terminal.integrated.defaultProfile.linux": "zsh",
 					"debug.internalConsoleOptions": "neverOpen",
 					"debug.showBreakpointsInOverviewRuler": false,
 					"debug.terminal.clearBeforeReusing": false,
 					"editor.tabSize": 2
     },
     "extensions": [
-     "philfontaine.autolaunch",
-						"xdebug.php-debug",
-						"bmewburn.vscode-intelephense-client",
-						"streetsidesoftware.code-spell-checker",
-						"EditorConfig.EditorConfig",
-						"ms-azuretools.vscode-docker",
-						"mrmlnc.vscode-apache",
-						"DavidAnson.vscode-markdownlint",
-						"emilast.LogFileHighlighter",
-						"yzhang.markdown-all-in-one"
-    ]
+		"philfontaine.autolaunch",
+		"xdebug.php-debug",
+		"bmewburn.vscode-intelephense-client",
+		"streetsidesoftware.code-spell-checker",
+		"EditorConfig.EditorConfig",
+		"ms-azuretools.vscode-docker",
+		"mrmlnc.vscode-apache",
+		"DavidAnson.vscode-markdownlint",
+		"emilast.LogFileHighlighter",
+		"yzhang.markdown-all-in-one",
+		"whatwedo.twig",
+		"donjayamanne.githistory",
+		"ritwickdey.LiveServer",
+		"johnpapa.vscode-peacock"
+	]
 			}
 		}
 	}

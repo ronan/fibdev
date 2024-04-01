@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker-compose -p "${COMPOSE_PROJECT_NAME}" restart $1 --no-deps

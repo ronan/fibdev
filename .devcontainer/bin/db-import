@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
+cat /workspace/inbox/$REMOTE_ENV.sql | mariadb -h db -u root -proot app

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -n $TERMINUS_SITE ]; then
+    f="/workspace/inbox/$REMOTE_ENV-$(date -I).sql"
+    remote cr
+    remote sql:dump > $f
+    ln -sf $f "/workspace/inbox/$REMOTE_ENV.sql"
+else
+ echo "Only terminus is supported currently"
+ exit
+fi

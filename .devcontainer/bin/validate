@@ -39,15 +39,16 @@ fi
 
 echo "🐒 Creating a backstop.json file"
 . /usr/bin/mo
-export TEST_URLS=(`head -n 50 /workspace/inbox/urls.txt | tr "\n" " "`)
+
+# export TEST_URLS=(`head -n 50 /workspace/inbox/urls.txt | tr "\n" " "`)
 cp -f /workspace/.devcontainer/backstop.js/backstop.config.js /workspace/data/backstop/backstop.config.js
 
 echo "🧹Clearing cache"
-app-cli cc all
+# app-cli cc all
 # drush9 cache:rebuild
 # drush10 cache:rebuild
 
 echo "👓 Peforming visual regression test ..."
-docker exec -it backstop backstop reference
-docker exec -it backstop backstop test
-echo "📊 http://localhost:3000/html_report/index.html?remote"
+backstop reference
+backstop test
+echo "📊 http://localhost:8100/"

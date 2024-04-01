@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -n $TERMINUS_SITE ]; then
+    terminus remote:drush $TERMINUS_SITE.$REMOTE_ENV $@
+else
+ echo ""
+ exit
+fi
