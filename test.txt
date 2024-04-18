@@ -1,0 +1,191 @@
+Resolving drupal.local (drupal.local)... 172.27.0.6
+Connecting to drupal.local (drupal.local)|172.27.0.6|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 967086 (944K) [text/html]
+--
+--2024-04-05 23:13:23--  http://drupal.local/
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 967086 (944K) [text/html]
+--
+--2024-04-05 23:13:23--  http://drupal.local/about
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 800616 (782K) [text/html]
+--
+--2024-04-05 23:13:23--  http://drupal.local/about
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 800616 (782K) [text/html]
+--
+--2024-04-05 23:13:24--  http://drupal.local/about/our-mission
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 397561 (388K) [text/html]
+--
+--2024-04-05 23:13:24--  http://drupal.local/about/our-mission
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 397561 (388K) [text/html]
+--
+--2024-04-05 23:13:24--  http://drupal.local/about/community
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 424039 (414K) [text/html]
+--
+--2024-04-05 23:13:24--  http://drupal.local/about/community
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 424039 (414K) [text/html]
+--
+--2024-04-05 23:13:24--  http://drupal.local/about/community/leadership
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 401092 (392K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/leadership
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 401092 (392K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/benefactors
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 495227 (484K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/benefactors
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 495227 (484K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/faculty
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 487381 (476K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/faculty
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 487381 (476K) [text/html]
+--
+--2024-04-05 23:13:25--  http://drupal.local/about/community/faculty/institute-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 404994 (396K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/faculty/institute-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 404994 (396K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/faculty/affiliated-faculty
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 451261 (441K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/faculty/affiliated-faculty
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 451261 (441K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/faculty/endowed-professors
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 392657 (383K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/faculty/endowed-professors
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 392657 (383K) [text/html]
+--
+--2024-04-05 23:13:26--  http://drupal.local/about/community/trainees
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 417303 (408K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 417303 (408K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees/brain-resilience-postdoctoral-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 408602 (399K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees/brain-resilience-postdoctoral-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 408602 (399K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees/interdisciplinary-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 432117 (422K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees/interdisciplinary-scholars
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 432117 (422K) [text/html]
+--
+--2024-04-05 23:13:27--  http://drupal.local/about/community/trainees/interdisciplinary-scholars/alumni
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 450254 (440K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/interdisciplinary-scholars/alumni
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 450254 (440K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/graduate-fellows
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 418975 (409K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/graduate-fellows
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 418975 (409K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/graduate-fellows/alumni
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 408756 (399K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/graduate-fellows/alumni
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 408756 (399K) [text/html]
+--
+--2024-04-05 23:13:28--  http://drupal.local/about/community/trainees/mbct-members
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 422352 (412K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.local/about/community/trainees/mbct-members
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 422352 (412K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.local/about/community/trainees/mbct-members/alumni-mbct-student-membership-program
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 419286 (409K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.local/about/community/trainees/mbct-members/alumni-mbct-student-membership-program
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 419286 (409K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.local/about/community/trainees/neurotech-trainees
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 433229 (423K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.local/about/community/trainees/neurotech-trainees
+Reusing existing connection to drupal.local:80.
+HTTP request sent, awaiting response... 200 OK
+Length: 433229 (423K) [text/html]
+--
+--2024-04-05 23:13:29--  http://drupal.

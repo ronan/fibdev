@@ -1,0 +1,59 @@
+#!/bin/sh
+set -e
+
+
+header "Taking a Site Snapshot…"
+
+# SNAPSHOT_DATE="2024-02-27T22-14-32"
+# SNAPSHOT_DATE=${SNAPSHOT_DATE:-$(date '+%FT%H-%M')};
+SNAPSHOT_DATE=${SNAPSHOT_DATE:-$(date -I)};
+REMOTE_ENV=${REMOTE_ENV:-"live"};
+id="${REMOTE_PROJECT}_${REMOTE_ENV}_${SNAPSHOT_DATE}"
+hsh=$(echo "$id" | md5sum | awk '{ print $1 }');
+commit=$(git -C /workspace/root rev-parse HEAD);
+dbfile="/workspace/inbox/$id.sql"
+
+if [ ! -f "$dbfile" ]; then 
+  db-pull $dbfile
+fi
+if [ -f "$dbfile" ]; then
+  db-import
+fi
+
+if [ ! -f /workspace/outbox/urls.txt ]; then
+    say "🕷️ Crawling site to gather urls to test"
+    crawl > /workspace/outbox/urls.txt
+fi
+if [ ! -f /workspace/inbox/urls.txt ]; then
+  head -n $PAGES_TO_TEST /workspace/outbox/urls.txt > /workspace/inbox/urls.txt
+fi
+pages=$(wc -l /workspace/outbox/urls.txt)
+
+say "📸 Comparing snapshot with original"
+# validate
+changes=''
+
+
+say "⏫ Sending the clone to the cloud bucket"
+gcloud storage cp -r -J /workspace/outbox/clone/* "$bucket"
+
+say "📁 Sending the site build files"
+gcloud storage cp -r /workspace/inbox/files/js "$bucket/sites/default/files"
+gcloud storage cp -r /workspace/inbox/files/css "$bucket/sites/default/files"
+
+say "🌇 Sending the rest of the files"
+gcloud storage cp -r -c /workspace/inbox/files/* "$bucket/sites/default/files"
+
+
+if [ -f "/workspace/inbox/$id.sql" ]; then
+  say "📁 Sending the database dump"
+  # gcloud storage cp -r /workspace/inbox/$id.sql "$bucket/.$hsh/$id.sql"
+fi
+
+say "🗃️ Writing to /workspace/outbox/snapshots.csv"
+if [ ! -f /workspace/outbox/snapshots.csv ]; then
+  echo "date,project,env,commit,hash,kind,version,pages,changes"\
+       > /workspace/outbox/snapshots.csv
+fi
+echo "$dt,$REMOTE_PROJECT,$REMOTE_ENV,$commit,$hash,$bucket,drupal,9.5.11,$pages,$changes"\
+      >> /workspace/outbox/snapshots.csv

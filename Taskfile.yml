@@ -1,0 +1,54 @@
+version: '3'
+
+includes:
+  devcontainer: ./.devcontainer/Taskfile.yml
+
+tasks:
+  build-dashboard-css:
+    dir: /workspace/.devcontainer/dashboard/
+    sources:
+      - '/workspace/.devcontainer/dashboard/src/*.css'
+    cmds:
+      - npx tailwindcss -i ./src/main.css -o /workspace/outbox/dashboard/main.css
+
+  build-dashboard-html:
+    dir: /workspace/.devcontainer/dashboard/
+    sources:
+      - '/workspace/.devcontainer/dashboard/src/build.js'
+      - '/workspace/.devcontainer/dashboard/src/*.mo'
+      - '/workspace/outbox/snapshots.csv'
+    cmds:
+      - node src/build.js
+
+  create-dashboard:
+    cmds:
+      - mkdir -p /workspace/outbox/dashboard
+
+  build-dashboard:
+    deps:
+      - create-dashboard
+      - build-dashboard-css
+      - build-dashboard-html
+
+  build-theme:
+    sources:
+      - /workspace/root/web/themes/custom/**/*
+    cmds:
+      - yarn --cwd /workspace/root/web/themes/custom/stanford_wutsai build
+
+  reload-env:
+    sources:
+      - /workspace/.devcontainer/.env
+      - /workspace/.env
+    cmds:
+      - restart
+
+  restart-gateway:
+    sources:
+      - /workspace/.devcontainer/gateway/nginx.conf
+    cmds:
+      - restart gateway
+  
+  
+    
+  

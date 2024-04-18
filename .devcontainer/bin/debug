@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "not implemented"
+# Start the debugger
+# Open the given url (or home) in a browser

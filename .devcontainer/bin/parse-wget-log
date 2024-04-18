@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cat /workspace/data/logs/wget.log \
+  | grep "\->" \
+  | grep "\.html" \
+  | sed -nre "s/^(.+) .+ URL:(.+) \[.+] \-> (.+) \[.+]$/\1,\2,\3/p" \
+  > /workspace/outbox/urls.csv
+
+cat /workspace/outbox/urls.csv \
+  | awk  -F',' '{ print $2 }' \
+  | sed -e 's/http:\/\/drupal.local//' \
+  | sort \
+  | uniq \
+  > /workspace/outbox/urls.txt

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# shellcheck disable=SC2016
+      get-urls |\
+      grep text\/html |\
+      awk -F "," '{ print $2 }' |\
+      sed -e 's/http:\/\/drupal.local//' |\
+      uniq |\
+      sort | php -r \
+'
+  $stack = [];
+  foreach (explode("\n", file_get_contents("php://stdin")) as $path) {
+    $out = $path;
+    while ($parent = array_pop($stack)) {
+      if (strpos($path, $parent) === 0) {
+        $count = count(explode("/", $parent));
+        $out = str_repeat("  ", $count) . "-" . ltrim(substr($path, strlen($parent)), "/");
+        array_push($stack, $parent);
+        break;
+      }
+    }
+    array_push($stack, $path);
+    echo ltrim($out, "/") . "\n";
+  }
+'
+# parent=''
+# prev=''
+# prefix="  "
+# for p in $paths; do
+#   if [ ${p#"$prev"} != $p ]; then
+#     prefix="  $prefix"
+#     parent=$prev
+#   fi
+#   # if [ "${p#"$parent"}" != "$p" ]; then
+#   #   # echo $p | perl -pe 's|(.*?/)|-|'
+#   # fi
+#   echo "$prefix${p#"$parent"}"
+#   prev=$p
+# done

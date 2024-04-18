@@ -1,0 +1,101 @@
+# Create cloud bucket for static assets
+
+- [ ] Create a cert:
+
+      {
+        "creationTimestamp": "2024-04-02T08:30:36.588-07:00",
+        "description": "",
+        "id": "1071550307149912691",
+        "kind": "compute#sslCertificate",
+        "managed": {
+          "status": "PROVISIONING",
+          "domains": [
+            "backdev.cloud",
+            "wtni.backdev.cloud"
+          ],
+          "domainStatus": {
+            "backdev.cloud": "PROVISIONING",
+            "wtni.backdev.cloud": "ACTIVE"
+          }
+        },
+        "name": "backdev-lb-cert",
+        "selfLink": "projects/backdev-cloud/global/sslCertificates/backdev-lb-cert",
+        "type": "MANAGED"
+      }
+
+- [ ] Create a forwarding load balancer
+
+        PUT https://compute.googleapis.com/compute/v1/projects/backdev-cloud/global/urlMaps/backdev-fe-redirect
+        {
+        "defaultUrlRedirect": {
+          "httpsRedirect": true,
+          "redirectResponseCode": "MOVED_PERMANENTLY_DEFAULT",
+          "stripQuery": false
+        },
+          "description": "Automatically generated HTTP to HTTPS redirect for the backdev-fe forwarding rule",
+          "fingerprint": "3SltzdU7nKs=",
+          "name": "backdev-fe-redirect"
+        }
+
+    - [ ] Create a fe loadbalancer
+
+        {
+          "IPAddress": "34.111.118.37",
+          "IPProtocol": "TCP",
+          "creationTimestamp": "2024-04-02T08:34:38.111-07:00",
+          "description": "A web load balancer for backdev artifacts.",
+          "fingerprint": "PGrx7hsXts4=",
+          "id": "435731212735191905",
+          "kind": "compute#forwardingRule",
+          "labelFingerprint": "42WmSpB8rSM=",
+          "loadBalancingScheme": "EXTERNAL",
+          "name": "backdev-fe",
+          "networkTier": "PREMIUM",
+          "portRange": "443-443",
+          "selfLink": "projects/backdev-cloud/global/forwardingRules/backdev-fe",
+          "target": "projects/backdev-cloud/global/targetHttpsProxies/backdev-lb-target-proxy"
+        }
+    - [ ] Create target proxy
+
+      {
+          "creationTimestamp": "2024-04-02T08:34:32.853-07:00",
+          "fingerprint": "9TijyYRQCM8=",
+          "id": "1025117969763638119",
+          "kind": "compute#targetHttpsProxy",
+          "name": "backdev-lb-target-proxy",
+          "quicOverride": "NONE",
+          "selfLink": "projects/backdev-cloud/global/targetHttpsProxies/backdev-lb-target-proxy",
+          "sslCertificates": [
+            "projects/backdev-cloud/global/sslCertificates/backdev-lb-cert"
+          ],
+          "tlsEarlyData": "DISABLED",
+          "urlMap": "projects/backdev-cloud/global/urlMaps/backdev-lb"
+        }
+
+
+
+
+
+- [ ] Create backend bucket
+
+      PUT https://compute.googleapis.com/compute/v1/projects/backdev-cloud/global/backendBuckets/backdev-be-bucket
+      {
+        "bucketName": "backdev",
+        "cdnPolicy": {
+          "cacheMode": "CACHE_ALL_STATIC",
+          "clientTtl": 3600,
+          "defaultTtl": 3600,
+          "maxTtl": 604800,
+          "negativeCaching": false,
+          "requestCoalescing": true,
+          "serveWhileStale": 86400,
+          "signedUrlCacheMaxAgeSec": "0"
+        },
+        "compressionMode": "AUTOMATIC",
+        "description": "",
+        "enableCdn": true,
+        "name": "backdev-be-bucket"
+      }
+
+- [ ] Add sub-domain to godaddy
+  - [ ] https://dcc.godaddy.com/control/dnsmanagement?domainName=backdev.cloud&subtab=dns-records

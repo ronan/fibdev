@@ -1,0 +1,14 @@
+# Deploy to *Live*
+
+1. Write code on local. Push to *dev*.
+2. Make config changes to *dev*.
+3. Export config from *dev* and commit to repo.
+4. Push code to *test*, pull db from *live*
+5. Run `drush deploy` on *test*
+6. Do a visual regression test of *test* against *live*
+7. Approve or reject results of VRT.
+8. Back up *live* db
+9. Push code to *live*
+10. Run `drush deploy` on *live*
+11. Do a VRT of *live* against *dev*.
+

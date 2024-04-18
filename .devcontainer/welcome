@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <style>
+            body {
+                text-align: center; background-color: #DDD; color: #333;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            }
+            a {
+                color: #777;
+            }
+            li, li a {
+                display: block;
+                text-decoration: none;
+            }
+            a {
+                padding: 20px;
+                margin: 10px 40px;
+                background-color: #EEE;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>DropDev for Drupal 9 to Drupal 10 migration</h1>
+        <ul>
+            <li><a href="//localhost:8010/">Drupal/Backstop Site</a></li>
+            <li><a href="//localhost:8010/info.php">phpinfo()</a></li>
+            <li><a href="//localhost:8080/">PHPMyAdmin</a></li>
+            <li><a href="//localhost:3030/">Visual Regression Testing report</a></li>
+        </ul>
+    </body>
+</html>

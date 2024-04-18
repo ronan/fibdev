@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import csv
+import itertools
+import sys
+
+with open('/workspace/data/logs/wget.log', 'r') as in_file:
+    stripped = (line.strip() for line in in_file)
+    lines = (line for line in stripped if line)
+    print(lines)
+
+    writer = csv.writer(sys.stdout)
+    writer.writerow(('title', 'intro', 'tagline'))

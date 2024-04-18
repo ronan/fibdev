@@ -1,0 +1,4 @@
+#!/bin/sh
+
+mkdir -p /workspace/data/logs-rotated
+logrotate -f /workspace/.devcontainer/devcontainer/logrotate.conf

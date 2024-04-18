@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "date,url,resp,path"
+cat /workspace/data/logs/wget.log | sed -nre \
+  '
+  /^--(.+)--  (http.+)$/ { 
+    s/^--(.+)--  (http.+)$/\1,\2,/;
+    P;
+  }; 
+  /^.+response... (.+)$/ {
+    s/^.+response... (.+)$/\1,/;
+    P;
+  };
+  /^Saving to\: ‘(.+)’$/ { 
+    s/^Saving to\: ‘(.+)’$/"\1"/;
+    P;
+  };
+  ' | perl -p -e 's/,\n/,/' -

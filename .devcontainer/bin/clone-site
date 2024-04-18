@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# PROD_URL=http://drupal
+# DEPTH_TO_CRAWL=3
+
+CLONE_DIR=/workspace/outbox/clone
+
+say "🕸️ Cloning $PROD_URL to $CLONE_DIR"
+
+mkdir -p $CLONE_DIR
+  rm -rf $CLONE_DIR/*
+
+while read path; do
+  say "Cloning $path..."
+  wget \
+      --force-html \
+      --max-redirect=1 \
+      --page-requisites \
+      --adjust-extension \
+      --execute robots=off \
+      --no-host-directories \
+      --directory-prefix=$CLONE_DIR \
+      --user-agent=backdev/crawlbot \
+      --exclude-directories=/sites/default/files \
+      --output-file=/workspace/data/logs/wget.log \
+      --rejected-log=/workspace/data/logs/wget-rejected.log \
+      $PROD_URL$path
+done < /workspace/inbox/cloneurls.txt
+
+cd $CLONE_DIR
+find . -depth -type d -exec sh -c '[ -f {}.html ] && mv {}.html {}/index.html' \;
+find . -depth -path "*.html" ! -name "index.html" -exec sh -c 'f="{}"; mv -- "$f" "${f%.html}"' \;
+find . -depth -path "*.?*.css" -exec sh -c 'f="{}"; mv -- "$f" "${f%.css}"' \;
+find . -depth -path "*.?*.js"  -exec sh -c 'f="{}"; mv -- "$f" "${f%.js}"' \;
+
+# cat /workspace/data/logs/wget.log \
+#   | grep -B 3 "text/html" \
+#   | grep http \
+#   | awk '{ print $3 }' \
+#   | uniq \
+#   | sed 's:[^/]*//[^/]*::' \
+#   | urldecode
