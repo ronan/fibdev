@@ -1,4 +1,4 @@
-FROM php:${PHP_VERSION:-"8.1"}-fpm
+ FROM php:${PHP_VERSION:-"8.1"}-fpm
 
 # Install xdebug
 RUN yes | pecl install xdebug \

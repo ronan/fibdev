@@ -1,32 +1,47 @@
 version: '3.3'
 
+x-service_defaults: &service_defaults
+    env_file:
+      - ./.env
+      - ../.env
+    volumes:
+      - ../:/workspace
+
 services:
   devcontainer:
+    # << : *service_defaults
     build:
       context: ./
       dockerfile: devcontainer/devcontainer.containerfile
     volumes:
       - ../:/workspace
-      # - /Users/ronan/.ssh:/root/.ssh:ro
-      # - /Users/ronan/.terminus:/root/.terminus
+      - /Users/ronan/.ssh:/root/.ssh:ro
+      - /Users/ronan/.terminus:/root/.terminus
+      # - ../data/homedir:/root/
     links:
-      - gateway:drupal
       - db
+      - gateway:report.local
+      - gateway:drupal.local
+      - gateway:reference.local
     env_file:
       - ./.env
       - ../.env
 
   gateway:
+    # << : *service_defaults
     image: nginx:1.25
     links:
       - app
     ports:
-      - 8010:80
+      - 80:80
+      - 8010
+      - 8100
     volumes:
       - ../:/workspace
       - ./gateway/nginx.conf:/etc/nginx/nginx.conf
 
   app:
+    << : *service_defaults
     build:
       context: ./
       dockerfile: app/app.containerfile
@@ -34,37 +49,30 @@ services:
       - db
     expose:
       - 9000
-    volumes:
-      - ../:/workspace
-    env_file:
-      - ./.env
-      - ../.env
 
   db:
+    << : *service_defaults
     image: mariadb:11
     volumes:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-    env_file:
-      - ./.env
-      - ../.env
 
   phpmyadmin:
+    << : *service_defaults
     image: phpmyadmin:5
     ports:
-      - 8080:80
-    env_file:
-      - ./.env
-      - ../.env
+      - 80
 
-  # backstop:
+  # sitespeed:
   #   image: backstopjs/backstopjs
-  #   command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
   #   links:
-  #     - gateway:drupal
-  #   ports:
-  #     - 3000:3000
+  #     - gateway:drupal.local
   #   volumes:
-  #     - ../:/workspace
-  #   env_file:
-  #     - ./.env
-  #     - ../.env
+  #     - ../data/sitespeed.io:/sitespeed.io
+
+  backstop:
+    << : *service_defaults
+    image: backstopjs/backstopjs
+    command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
+    links:
+      - gateway:drupal.local
+      - gateway:reference.local

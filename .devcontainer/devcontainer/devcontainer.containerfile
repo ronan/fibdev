@@ -9,6 +9,7 @@ RUN apt-get update && \
 			libpng-dev \
 			libjpeg-dev \
 			libwebp-dev \
+			logrotate \
 			mariadb-client \
 			libfreetype6-dev && \
 	  docker-php-ext-configure \ 
@@ -40,17 +41,10 @@ RUN cd ~ && \
 RUN ln -s /workspace/.devcontainer/devcontainer/devcontainer.php.ini \
           /usr/local/etc/php/conf.d/devcontainer.php.ini
 
-# Helper commands
-RUN ln -s /workspace/.devcontainer/bin/drush        	 /usr/local/bin/drush;        \
-    ln -s /workspace/.devcontainer/bin/initialize.php  /usr/local/bin/initialize;   \
-    ln -s /workspace/.devcontainer/bin/reset.sh        /usr/local/bin/reset;        \
-    ln -s /workspace/.devcontainer/bin/ingest.php      /usr/local/bin/ingest;       \
-    ln -s /workspace/.devcontainer/bin/upgrade.php     /usr/local/bin/upgrade;      \
-    ln -s /workspace/.devcontainer/bin/validate.sh     /usr/local/bin/validate;     \
-    ln -s /workspace/.devcontainer/bin/run.php         /usr/local/bin/run;
-
-ENV PATH="${PATH}:/workspace/.devcontainer/bin"
-#RUN yarn global add rjsonx
+# Task https://taskfile.dev
+RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
 # Disable git's folder ownership setting
-RUN git config --global --add safe.directory "*"
+# RUN git config --global --add safe.directory "*"
+
+ENV PATH="${PATH}:/workspace/.devcontainer/bin"

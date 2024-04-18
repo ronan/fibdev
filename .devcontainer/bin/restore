@@ -6,14 +6,19 @@ header "    ⬆️  Restoring application ...      "
 cd /workspace
 
 echo "🗑️  Deleting logs, databases and temporary files ..."
-mkdir -p data
-rm   -rf "data/*/*"
 mkdir -p data/logs data/tmp outbox
+rotate-logs
 
 echo "📥 Cloning codebase ... "
 if [ ! -d /workspace/root ]; then
   if [ -n "$GIT_URL" ]; then
-    git clone $GIT_URL -b "${GIT_BRANCH:-main}" /workspace/rootg
+    git clone $GIT_URL -b "${GIT_BRANCH:-main}" /workspace/root
+    git clone $GIT_URL -b "${GIT_BRANCH:-main}" /workspace/root
+    git config --global --add safe.directory /workspace/root
+    if [ -n "$GIT_COMMIT_SHA" ]; then
+      cd /workspace/root
+      git reset --hard "$GIT_COMMIT_SHA"
+    fi
   else
     echo "😵 Please place the site in /workspace/root or specify a GIT_URL in ./.env"
     exit
@@ -26,12 +31,12 @@ if [ -d /workspace/root ]; then
 fi
 
 echo "📁 Resetting site files ..."
-if [ -d /workspace/inbox/files ]; then
+if [ -d /workspace/inbox/files ] && [ ! -d /workspace/root/sites/default/files ]; then
     rm -rf /workspace/root/files
-    ln -s /workspace/inbox/files /workspace/root/files
+    ln -s /workspace/inbox/files /workspace/root/sites/default/files
 fi
 
-
+echo "📝 Adding local config overrides ..."
 src="/workspace/.devcontainer/drupal/settings.local.php"
 dst="/workspace/root/web/sites/default/settings.local.php"
 if is-backdrop; then
@@ -39,8 +44,6 @@ if is-backdrop; then
   dst="/workspace/root/settings.local.php"
 fi
 if [ ! -f "$dst" ]; then
-  echo "📝 Adding local config overrides ..."
-
   if [ ! -f /workspace/inbox/settings.local.php ]; then
     cp $src /workspace/inbox/settings.local.php
   fi
@@ -48,18 +51,22 @@ if [ ! -f "$dst" ]; then
 fi
 ln -fs /workspace/.devcontainer/app/info.php /workspace/root/web/info.php
 
-
-echo "🔨 Deleting and recreating DB ..."
+say "🔨 Deleting and recreating DB ..."
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
 
-echo "📦 Importing SQL dump ..."
-if [ -e /workspace/inbox/*.sql.gz ]; then
-  zcat /workspace/inbox/*.sql* | mariadb -h db -u root -proot app
-elif [ -e /workspace/inbox/*.sql ]; then
-  cat /workspace/inbox/*.sql | mariadb -h db -u root -proot app
-else
-  echo "Please place a sql or sql.gz file in /workspace/inbox"
-fi
+say "📦 Importing SQL dump ..."
+db-import
+
+echo "🖼️ Installing and Configuring stage_file_proxy"
+cd /workspace/root
+composer require drupal/stage_file_proxy
+app en stage_file_proxy
+drush -y cset stage_file_proxy.settings origin "$PROD_URL"
+
+# echo "🖼️ Enabling theme debugging"
+
+echo "🖌️ Buiding theme assets"
+task build-theme
 
 app deploy
 

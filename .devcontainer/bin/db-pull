@@ -1,7 +1,9 @@
 #!/bin/sh
 
+id="${REMOTE_PROJECT}_${REMOTE_ENV:-"live"}_${SNAPSHOT_DATE:-$(date -I)}"
+
 if [ -n $TERMINUS_SITE ]; then
-    f="/workspace/inbox/$REMOTE_ENV-$(date -I).sql"
+    f=${1:-"/workspace/inbox/$id.sql"}
     remote cr
     remote sql:dump > $f
     ln -sf $f "/workspace/inbox/$REMOTE_ENV.sql"

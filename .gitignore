@@ -4,3 +4,4 @@
 /outbox/*
 /inbox/*
 /.env
+node_modules

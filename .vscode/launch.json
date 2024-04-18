@@ -9,7 +9,7 @@
             "type": "php",
             "request": "launch",
             "stopOnEntry": false,
-            "port": 9001,
+            "port": 9000,
             "auto": true
         }
     ]
