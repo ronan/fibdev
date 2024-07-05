@@ -1,17 +1,19 @@
 #!/bin/sh
 
+# usage: init [--force]
+
 set -e
 
-header "          Welcome to DropDev          "
+header "      Welcome to DropDev       "
 echo "
-     *** $PROJECT ***"
+            *** $PROJECT ***"
 
 vars="\
 PROJECT
 PHP_VERSION
-COMPOSE_PROJECT_NAME
-TERMINUS_SITE
-TERMINUS_ENV
+REMOTE_TYPE
+REMOTE_PROJECT
+REMOTE_ENV
 DEV_URL
 PREPROD_URL
 PROD_URL
@@ -34,37 +36,28 @@ if [ -f /workspace/.env ] && [ "$1" != "--force" ]; then
 
   To discard these values and re-initialize, please run \`init --force\`
   or run the Force Reset Environment task.
-
 ';
-
-  if [ ! -d /workspace/root ]; then
-    cd /workspace && git clone $GIT_URL -b "${GIT_BRANCH:-main}" root
-  fi
-  exit
 fi
 
-header "  ⬆️  Initializing dev environment ... "
+say "⬆️  Initializing dev environment ..."
 
+say "📁 Createing directories"
+dirs="data/logs data/tmp inbox outbox"
+for i in $dirs; do
+    mkdir -p $i
+done
+
+if [ ! -d /workspace/root ] && [ -n "$GIT_URL" ]; then
+  say "👯 Cloning codebase"
+  cd /workspace && git clone $GIT_URL -b "${GIT_BRANCH:-main}" root
+fi
+
+say "🪵 Rotating logs"
+rotate-logs
+
+say "📀 Creating DB"
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
 mkdir -p /workspace/data/logs /workspace/data/tmp /workspace/outbox /workspace/inbox
 echo "/" > /workspace/inbox/urls.txt
-
-echo "# Project-specific settings.
-
-# To reload these values into the environment rebuild the devcontainer.
-
-for i in $vars; do printf '
- | %+20.20s | %-62.62s…|' "$i" "$(eval c=\${$i} && echo $c)"; done; printf ' 
-
-
-PROJECT=${PROJECT:-"Untitled Project"}
-PHP_VERSION=${PHP_VERSION:-"8.2"}
-
-GIT_URL=$GIT_URL
-
-PREPROD_URL=$PREPROD_URL
-PROD_URL=$PROD_URL
-
-" > /workspace/.env
 
 code /workspace/.env

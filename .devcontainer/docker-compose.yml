@@ -22,6 +22,7 @@ services:
       - db
       - gateway:report.local
       - gateway:drupal.local
+      - gateway:backstop.local
       - gateway:reference.local
     env_file:
       - ./.env
@@ -75,4 +76,5 @@ services:
     command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
     links:
       - gateway:drupal.local
+      - gateway:backstop.local
       - gateway:reference.local

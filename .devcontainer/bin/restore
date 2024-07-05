@@ -26,14 +26,19 @@ if [ ! -d /workspace/root ]; then
 fi
 
 echo "🎶 Running composer install"
-if [ -d /workspace/root ]; then
+if [ -f /workspace/root/composer.json ]; then
   cd /workspace/root && composer install
 fi
 
-echo "📁 Resetting site files ..."
-if [ -d /workspace/inbox/files ] && [ ! -d /workspace/root/sites/default/files ]; then
-    rm -rf /workspace/root/files
+if is-drupal && [ -d /workspace/inbox/files ] && [ ! -d /workspace/root/sites/default/files ]; then
+    echo "📁 Linking site files ..."
+    rm -rf /workspace/root/sites/default/files
     ln -s /workspace/inbox/files /workspace/root/sites/default/files
+fi
+if is-backdrop && [ -d /workspace/inbox/files ] && [ ! -d /workspace/root/files ]; then
+    echo "📁 Linking site files ..."
+    rm -rf /workspace/root/files
+    ln -s /workspace/inbox/files /workspace/root/files
 fi
 
 echo "📝 Adding local config overrides ..."
@@ -43,13 +48,14 @@ if is-backdrop; then
   src="/workspace/.devcontainer/app/backdrop.settings.local.php"
   dst="/workspace/root/settings.local.php"
 fi
+
 if [ ! -f "$dst" ]; then
   if [ ! -f /workspace/inbox/settings.local.php ]; then
     cp $src /workspace/inbox/settings.local.php
   fi
   ln -s /workspace/inbox/settings.local.php $dst
 fi
-ln -fs /workspace/.devcontainer/app/info.php /workspace/root/web/info.php
+# ln -fs /workspace/.devcontainer/app/info.php /workspace/root/web/info.php
 
 say "🔨 Deleting and recreating DB ..."
 mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE app'
@@ -57,18 +63,39 @@ mariadb -h db --password=root -e 'DROP DATABASE IF EXISTS app; CREATE DATABASE a
 say "📦 Importing SQL dump ..."
 db-import
 
-echo "🖼️ Installing and Configuring stage_file_proxy"
-cd /workspace/root
-composer require drupal/stage_file_proxy
-app en stage_file_proxy
-drush -y cset stage_file_proxy.settings origin "$PROD_URL"
+if is-drupal; then
+  echo "🖼️ Installing and Configuring stage_file_proxy"
+  cd /workspace/root
+  composer require drupal/stage_file_proxy
+  app en stage_file_proxy
+  drush -y cset stage_file_proxy.settings origin "$PROD_URL"
+fi
 
 # echo "🖼️ Enabling theme debugging"
 
-echo "🖌️ Buiding theme assets"
-task build-theme
+# echo "🖌️ Buiding theme assets"
+# task build-theme
+# ln -fs /workspace/inbox/backdrop_decanter7 /workspace/root/themes/backdrop_decanter7
+# ln -fs /workspace/inbox/backdrop_decanter6 /workspace/root/themes/backdrop_decanter6
 
-app deploy
+if is-drupal; then 
+  echo "🛳️ Deploying app"
+  app deploy
+fi
+if is-backdrop; then
+  echo "🧼 Clearing Cache"
+  cr
+  echo "⏫ Updating DB"
+  app updb
+  echo "📥 Importing config"
+  app cim
+  echo "🕰️ Running Cron"
+  app cron
+  echo "🧼 Clearing Cache"
+  cr
+  echo "@TODO: Rebuild perms at http://backdrop.local/admin/reports/status/rebuild"
+  cr
+fi
 
 echo "
 

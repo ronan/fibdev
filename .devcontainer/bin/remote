@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $REMOTE_TYPE = 'pantheon' ]; then
-    say "🌎 Running remote:drush $REMOTE_PROJECT.$REMOTE_ENV $@"
+    say "🌎 Running 'terminus remote:drush $REMOTE_PROJECT.$REMOTE_ENV $@'"
     terminus remote:drush $REMOTE_PROJECT.$REMOTE_ENV $@
 else
  echo ""

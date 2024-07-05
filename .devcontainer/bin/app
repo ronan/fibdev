@@ -3,7 +3,7 @@
 if is-drupal; then
     docker-exec app drush --yes --root=/workspace/root/ --uri=http://drupal.local "$@"
 elif is-backdrop; then
-    docker-exec app /root/bee/bee.php --yes --root=/workspace/root/ --base-url=http://backstop.localdr  "$@"
+    docker-exec app /root/bee/bee.php --yes --root=/workspace/root/ --base-url=http://backdrop.local  "$@"
 else
  echo "Could not find an installed version of Drupal or Backdrop at /workspace/root"
  exit -1

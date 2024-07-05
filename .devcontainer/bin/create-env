@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# usage: create-env [PROJECT]
+
+if [ -f .env ]; then
+  exit
+fi
+
+echo \
+"# Project-specific settings.
+
+## To reload these values into the environment rebuild the devcontainer.
+
+PROJECT=${PROJECT:-${1:-}}
+PHP_VERSION=${PHP_VERSION:-"8.2"}
+
+GIT_URL=$GIT_URL
+
+PREPROD_URL=$PREPROD_URL
+PROD_URL=$PROD_URL
+" > .env

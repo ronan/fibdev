@@ -5,3 +5,4 @@
 /inbox/*
 /.env
 node_modules
+.task/*

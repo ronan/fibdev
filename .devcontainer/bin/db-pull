@@ -2,10 +2,22 @@
 
 id="${REMOTE_PROJECT}_${REMOTE_ENV:-"live"}_${SNAPSHOT_DATE:-$(date -I)}"
 
-if [ -n $TERMINUS_SITE ]; then
+# mkdir -p /workspace/data/db
+
+if [ "$REMOTE_TYPE" = 'pantheon' ]; then
     f=${1:-"/workspace/inbox/$id.sql"}
-    remote cr
-    remote sql:dump > $f
+
+    if is-drupal; then
+        # terminus env:cc $REMOTE_PROJECT.$REMOTE_ENV
+        terminus local:getLiveDB $REMOTE_PROJECT.$REMOTE_ENV > $f
+    elif is-backdrop; then
+        terminus env:clear-cache $REMOTE_PROJECT.$REMOTE_ENV && \
+        terminus backup:create $REMOTE_PROJECT.$REMOTE_ENV --element=db --keep-for=1 && \
+        curl -L $(terminus backup:get $REMOTE_PROJECT.$REMOTE_ENV --element=db) | gunzip -c > $f
+    fi
+
+    # remote env:cc
+    # remote sql:dump > $f
     ln -sf $f "/workspace/inbox/$REMOTE_ENV.sql"
 else
  echo "Only terminus is supported currently"

@@ -1,9 +1,14 @@
+# https://taskfile.dev/
 version: '3'
 
 includes:
   devcontainer: ./.devcontainer/Taskfile.yml
 
 tasks:
+  create-dashboard:
+    cmds:
+      - mkdir -p /workspace/outbox/dashboard
+
   build-dashboard-css:
     dir: /workspace/.devcontainer/dashboard/
     sources:
@@ -20,10 +25,6 @@ tasks:
     cmds:
       - node src/build.js
 
-  create-dashboard:
-    cmds:
-      - mkdir -p /workspace/outbox/dashboard
-
   build-dashboard:
     deps:
       - create-dashboard
@@ -34,7 +35,7 @@ tasks:
     sources:
       - /workspace/root/web/themes/custom/**/*
     cmds:
-      - yarn --cwd /workspace/root/web/themes/custom/stanford_wutsai build
+      - yarn --cwd /workspace/root/web/themes/custom/THEME build
 
   reload-env:
     sources:
@@ -49,6 +50,8 @@ tasks:
     cmds:
       - restart gateway
   
-  
-    
-  
+  build-theme:
+    sources:
+      - /workspace/root/themes/backdrop_decanter7/*
+    cmds:
+      - cd /workspace/root/themes/backdrop_decanter7/ && npx tailwindcss -i css/main.css -o dist/main.css --watch

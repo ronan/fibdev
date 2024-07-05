@@ -5,6 +5,10 @@
 	"service": "devcontainer",
 	"workspaceFolder": "/workspace",
 	"postCreateCommand": ["init"],
+	"initializeCommand": "PROJECT='${localWorkspaceFolderBasename}' ${localWorkspaceFolder}/.devcontainer/bin/create-env",
+	"containerEnv": {
+		"PROJECT": "${localWorkspaceFolderBasename}"
+	},
 	"remoteUser": "root",
 	"secrets": {
 		"PANTHEON_MACHINE_TOKEN": {
@@ -13,20 +17,39 @@
 		}
 	},
 	"features": {
+		"ghcr.io/devcontainers-contrib/features/gulp-cli:2": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/dhoeric/features/google-cloud-cli:1": {},
+		"ghcr.io/joshuanianji/devcontainer-features/gcloud-cli-persistence:1": {},
 		"ghcr.io/devcontainers/features/git:1": {},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
 		"ghcr.io/devcontainers/features/node:1": {},
-		"ghcr.io/devcontainers-contrib/features/gulp-cli:2": {},
-		"ghcr.io/devcontainers/features/python:1": {
-			"version": "3.10"
-		},
-		"ghcr.io/dhoeric/features/google-cloud-cli:1": {},
-		"ghcr.io/joshuanianji/devcontainer-features/gcloud-cli-persistence:1": {},
-		"ghcr.io/devcontainers-contrib/features/fzf:1": {}
+		"ghcr.io/devcontainers-contrib/features/fzf:1": {},
+		"ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {}
 	},
 	"customizations": {
 		"vscode": {
 			"settings": {
+				"peacock.remoteColor": "#f9e64f",
+				"workbench.colorCustomizations": {
+					"activityBar.activeBackground": "#fbed80",
+					"activityBar.background": "#fbed80",
+					"activityBar.foreground": "#15202b",
+					"activityBar.inactiveForeground": "#15202b99",
+					"activityBarBadge.background": "#06b9a5",
+					"activityBarBadge.foreground": "#15202b",
+					"commandCenter.border": "#15202b99",
+					"sash.hoverBorder": "#fbed80",
+					"statusBar.background": "#f9e64f",
+					"statusBar.foreground": "#15202b",
+					"statusBarItem.hoverBackground": "#f7df1e",
+					"statusBarItem.remoteBackground": "#f9e64f",
+					"statusBarItem.remoteForeground": "#15202b",
+					"titleBar.activeBackground": "#f9e64f",
+					"titleBar.activeForeground": "#15202b",
+					"titleBar.inactiveBackground": "#f9e64f99",
+					"titleBar.inactiveForeground": "#15202b99"
+				},
 				"files.exclude": {
 					// ".*": true, // Hide all hidden files for a focused view of just the source
 					"**/.git": true,
@@ -64,23 +87,23 @@
 					"editor.tabSize": 2
     },
     "extensions": [
-		"philfontaine.autolaunch",
-		"xdebug.php-debug",
-		"bmewburn.vscode-intelephense-client",
-		"streetsidesoftware.code-spell-checker",
-		"EditorConfig.EditorConfig",
-		"ms-azuretools.vscode-docker",
-		"mrmlnc.vscode-apache",
-		"DavidAnson.vscode-markdownlint",
-		"emilast.LogFileHighlighter",
-		"yzhang.markdown-all-in-one",
-		"whatwedo.twig",
-		"donjayamanne.githistory",
-		"ritwickdey.LiveServer",
-		"johnpapa.vscode-peacock",
-		"bradlc.vscode-tailwindcss",
-		"task.vscode-task"
-	]
+					"philfontaine.autolaunch",
+					"xdebug.php-debug",
+					"bmewburn.vscode-intelephense-client",
+					"streetsidesoftware.code-spell-checker",
+					"EditorConfig.EditorConfig",
+					"ms-azuretools.vscode-docker",
+					"mrmlnc.vscode-apache",
+					"DavidAnson.vscode-markdownlint",
+					"emilast.LogFileHighlighter",
+					"yzhang.markdown-all-in-one",
+					"whatwedo.twig",
+					"donjayamanne.githistory",
+					"ritwickdey.LiveServer",
+					"johnpapa.vscode-peacock",
+					"bradlc.vscode-tailwindcss",
+					"task.vscode-task"
+				]
 			}
 		}
 	}
