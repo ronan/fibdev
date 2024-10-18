@@ -14,8 +14,16 @@ echo \
 PROJECT=${PROJECT:-${1:-}}
 PHP_VERSION=${PHP_VERSION:-"8.2"}
 
-GIT_URL=$GIT_URL
+# REMOTE_TYPE should be 'pantheon', 'platform' or 'other'
+REMOTE_TYPE=${REMOTE_TYPE:-"pantheon"}
 
+REMOTE_PROJECT=${PROJECT:-${1:-}}
+COMPOSE_PROJECT_NAME=${PROJECT:-${1:-}}
+
+GIT_URL=$GIT_URL
+GIT_BRANCH=${GIT_BRANCH:-"master"}
+
+DEV_URL=$DEV_URL
 PREPROD_URL=$PREPROD_URL
 PROD_URL=$PROD_URL
 " > .env
