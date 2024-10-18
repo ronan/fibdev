@@ -42,7 +42,7 @@ if is-backdrop && [ -d /workspace/inbox/files ] && [ ! -d /workspace/root/files 
 fi
 
 echo "📝 Adding local config overrides ..."
-src="/workspace/.devcontainer/drupal/settings.local.php"
+src="/workspace/.devcontainer/app/drupal.settings.local.php"
 dst="/workspace/root/web/sites/default/settings.local.php"
 if is-backdrop; then
   src="/workspace/.devcontainer/app/backdrop.settings.local.php"

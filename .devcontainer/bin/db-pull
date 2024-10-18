@@ -8,8 +8,9 @@ if [ "$REMOTE_TYPE" = 'pantheon' ]; then
     f=${1:-"/workspace/inbox/$id.sql"}
 
     if is-drupal; then
-        # terminus env:cc $REMOTE_PROJECT.$REMOTE_ENV
-        terminus local:getLiveDB $REMOTE_PROJECT.$REMOTE_ENV > $f
+        # terminus local:getLiveDB $REMOTE_PROJECT.$REMOTE_ENV > $f
+        terminus env:cc $REMOTE_PROJECT.$REMOTE_ENV
+        remote sql:dump > $f
     elif is-backdrop; then
         terminus env:clear-cache $REMOTE_PROJECT.$REMOTE_ENV && \
         terminus backup:create $REMOTE_PROJECT.$REMOTE_ENV --element=db --keep-for=1 && \

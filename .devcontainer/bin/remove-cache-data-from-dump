@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sed -e '/^LOCK TABLES `cache_/,/UNLOCK TABLES;/ d; /^LOCK TABLES `redirect_404`/,/UNLOCK TABLES;/ d; /^LOCK TABLES `search_/,/UNLOCK TABLES;/ d;'

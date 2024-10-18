@@ -61,7 +61,7 @@ services:
     << : *service_defaults
     image: phpmyadmin:5
     ports:
-      - 80
+      - 8080:80
 
   # sitespeed:
   #   image: backstopjs/backstopjs
