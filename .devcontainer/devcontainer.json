@@ -10,6 +10,11 @@
 		"PROJECT": "${localWorkspaceFolderBasename}"
 	},
 	"remoteUser": "root",
+	"mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.terminus,target=/root/.terminus,type=bind,consistency=cached",
+		// "source=${localWorkspaceFolder}/app-data,target=/data,type=bind,consistency=cached"
+	],
 	"secrets": {
 		"PANTHEON_MACHINE_TOKEN": {
 			"description": "A valid Pantheon machine token.",
@@ -25,7 +30,8 @@
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
 		"ghcr.io/devcontainers/features/node:1": {},
 		"ghcr.io/devcontainers-contrib/features/fzf:1": {},
-		"ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {}
+		"ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {},
+		"ghcr.io/devcontainers-extra/features/vscode-cli:1": {}
 	},
 	"customizations": {
 		"vscode": {

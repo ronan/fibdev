@@ -1,5 +1,3 @@
-version: '3.3'
-
 x-service_defaults: &service_defaults
     env_file:
       - ./.env
@@ -9,24 +7,16 @@ x-service_defaults: &service_defaults
 
 services:
   devcontainer:
-    # << : *service_defaults
+    << : *service_defaults
     build:
       context: ./
       dockerfile: devcontainer/devcontainer.containerfile
-    volumes:
-      - ../:/workspace
-      - /Users/ronan/.ssh:/root/.ssh
-      - /Users/ronan/.terminus:/root/.terminus
-      # - ../data/homedir:/root/
     links:
       - db
       - gateway:report.local
       - gateway:drupal.local
       - gateway:backstop.local
       - gateway:reference.local
-    env_file:
-      - ./.env
-      - ../.env
 
   gateway:
     # << : *service_defaults
@@ -41,6 +31,12 @@ services:
       - ../:/workspace
       - ./gateway/nginx.conf:/etc/nginx/nginx.conf
 
+  db:
+    << : *service_defaults
+    image: mariadb:11
+    volumes:
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+
   app:
     << : *service_defaults
     build:
@@ -51,30 +47,29 @@ services:
     expose:
       - 9000
 
-  db:
-    << : *service_defaults
-    image: mariadb:11
-    volumes:
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-
   phpmyadmin:
     << : *service_defaults
     image: phpmyadmin:5
     ports:
       - 8080:80
 
-  # sitespeed:
-  #   image: backstopjs/backstopjs
-  #   links:
-  #     - gateway:drupal.local
-  #   volumes:
-  #     - ../data/sitespeed.io:/sitespeed.io
+  sitespeed:
+    image: sitespeedio/sitespeed.io
+    command: -b chrome http://backdrop.local
+    links:
+      - gateway:drupal.local
+      - gateway:backdrop.local
+      - gateway:app.local
+    volumes:
+      - ../outbox/sitespeed.io:/sitespeed.io
 
   backstop:
     << : *service_defaults
     image: backstopjs/backstopjs
     command: --config="/workspace/.devcontainer/backstop.js/backstop.config.js" remote
     links:
+      - gateway:backdrop.local
+      - gateway:app.local
       - gateway:drupal.local
       - gateway:backstop.local
       - gateway:reference.local
